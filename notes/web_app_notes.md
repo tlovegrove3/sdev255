@@ -383,3 +383,588 @@ Exploring further:
 - [EventTarget.addEventListener()](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener) from MDN
 - [Event flow tutorial](http://www.java2s.com/Tutorials/Javascript/DOM_Event/Event_Flow_capture_target_and_bubbling_in_Javascript.htm) from Java2s
 
+## 3.1 Classes
+
+### Constructor functions
+
+A JavaScript class is a special function, called a constructor function, that defines properties and methods from which an object may inherit. A constructor function is a function that initializes a new object when an object is instantiated with the `new` operator. The this keyword refers to the current object and is used to access properties inside the class.
+
+### Prototype object
+
+Every JavaScript object is associated with a second object called the prototype. The prototype object contains properties that an associated object inherits when the associated object is created.
+
+When an object is instantiated with the `new` keyword, the object is assigned the `prototype` property that is associated with the constructor function. Ex: When a date object is instantiated with `new Date()`, the date object is assigned the `Date.prototype` from the `Date` constructor function. All date objects have access to the same methods like `getDate()` and `getYear()` because `getDate()` and `getYear()` are methods assigned to `Date.prototype`.
+
+Developers often assign methods to the class' `prototype` instead of the constructor function because prototype methods are more memory efficient. The JavaScript interpreter must allocate memory for each method defined in a constructor function, but a prototype method is only allocated memory once and is shared by all objects created with the same constructor function.
+
+### Private properties and closures
+
+A private property is a property that is only accessible to object methods but is not accessible from outside the class. Private properties may be simulated in JavaScript by creating local variables in a constructor function with getters and setters to get and set the properties.
+
+Figure 3.1.2: Creating a private property called "secret" with a getter and setter.
+
+```js
+function Person(name, age) {
+   this.name = name;
+   this.age = age;
+
+   // private
+   let secret;
+
+   // public methods have access to private properties
+   this.setSecret = function(s) {
+      secret = s;
+   };
+
+   this.getSecret = function() {
+      return secret;
+   };
+};
+
+let bob = new Person("Bob", 21);
+bob.setSecret("I have mutant powers!");
+console.log(bob.getSecret());   // I have mutant powers!
+console.log(bob.secret);        // undefined
+```
+
+Private class variables can be simulated in JavaScript because of closures. A closure is a special object that is automatically created and maintains a function's local variables and values after the function has returned. The `secret` variable defined in the `Person` constructor function above is remembered because of a closure that remembers the `Person` constructor function's local variables.
+
+### Inheritance
+
+Inheritance creates a new child class that adopts properties of a parent class. Ex: A Student class (child) may inherit from a Person class (parent), so a Student class has the same properties of a Person and may add even more properties.
+
+Implementing inheritance in JavaScript is more complicated than most other programming languages. For a child class to inherit from a parent class, 3 operations must be performed:
+
+1.  The child class calls the parent class' constructor function from the child's constructor function using the `call()` method.
+
+2.  The Object.create() method copies the parent's prototype, and the new copy is assigned to the child's prototype to give the child class the same functionality as the parent class.
+
+3.  The child class' `prototype.constructor` is explicitly set to the child's constructor function.
+
+```js
+// Parent class
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.sayHello = function() {
+  console.log("Hello. My name is " + this.name);
+};
+Person.prototype.sayGoodbye = function() {
+  console.log("Goodbye!");
+};
+
+// Child class
+function Student(name, gpa) {   
+  Person.call(this, name);
+  this.gpa = gpa;
+}
+
+// Duplicate functionality of parent
+Student.prototype = Object.create(Person.prototype);
+Student.prototype.constructor = Student;
+
+// Replace the parent's sayHello with a new method
+Student.prototype.sayHello = function() {
+  console.log("Hi, I'm " + this.name + " with a "
+      + this.gpa + " GPA!");
+}
+
+
+let bob = new Student("Bob", 3.5);
+bob.sayHello();
+bob.sayGoodbye();
+
+```
+
+3.1.8: Practice with inheritance and private properties.
+
+The JavaScript code defines a `Game` class and two methods.
+
+1.  Add a `VideoGame` class and all the necessary code so `VideoGame` inherits from the `Game` class.
+
+2.  Add a private variable to the `VideoGame` class called `totalPoints`, and initialize `totalPoints` to 0.
+
+3.  Add a getter method called `getScore()` to get the `totalPoints` variable.
+
+4.  Add a method called `addToScore(points)` that adds the `points` to `totalPoints`.
+
+5.  Instantiate a new `VideoGame` object with the title "Pac-Man". Call the appropriate methods to:
+
+    1.  Start playing the game.
+    2.  Show the score (should be 0).
+    3.  Add 20 points.
+    4.  Add 50 points.
+    5.  Show the score (should be 70).
+    6.  Stop playing the game.
+
+```js
+function Game(title) {
+  this.title = title;  
+}
+
+Game.prototype.startPlaying = function() {
+  console.log("Now playing " + this.title + "!");
+};
+
+Game.prototype.stopPlaying = function() {
+  console.log("Taking a break.");
+};
+
+function VideoGame(title) {
+   Game.call(this, title);
+   
+   let totalPoints = 0;
+   
+   this.getScore = function() {
+      return totalPoints;
+   };
+   
+   this.addToScore = function(score) {
+      totalPoints += score;
+   };
+}
+VideoGame.prototype = Object.create(Game.prototype);
+VideoGame.prototype.constructor = VideoGame;
+
+let game1 = new VideoGame("Pac-Man");
+game1.startPlaying();
+console.log(game1.getScore());
+game1.addToScore(50);
+console.log(game1.getScore());
+game1.stopPlaying();
+
+```
+
+Console output:
+
+```cmd
+Now playing Pac-Man!
+0
+50
+Taking a break.
+```
+
+## 3.2 Classes (ES6)
+
+### Classes in EcmaScript 6
+
+EcmaScript 6 (ES6) simplifies class declarations, introducing syntax that looks more familiar to a Java or C# programmer. Although the syntax is different, the underlying prototype model is not changed.
+
+A class is declared by using the **class keyword** followed by a class name. The class is implemented by declaring methods within braces. Each method declaration is similar to a function declaration, but without the `function` keyword. The method name constructor() is reserved for the class constructor.
+
+### Inheritance in ES6
+
+The **extends keyword** allows one class to inherit from another. In the inheriting class' constructor, calling the **super()** function calls the parent class' constructor. `super()` must be called before using the `this` keyword in the inheriting class' constructor.
+
+### Getters and setters
+
+A class method declaration preceded by the **get keyword** defines a getter method for a property. A class method declaration preceded by the **set keyword** defines a setter method for a property. Defining either a getter or setter method named X, adds a property named X to each class instance. Ex: A `Square` class may have a getter method declared as:
+
+```js
+get area() {
+   return this.width * this.height;
+}
+```
+
+After creating a Square instance named s1, the expression s1.area, without parentheses, gets the square's area.
+A get method must not have parameters. A set method must have one parameter. A property can be defined via a getter only, a setter only, or both a getter and setter.
+
+A **static method** is a method that can be called without creating an instance of the class. A static method is declared with the **static** keyword preceding the method name. The method is called with the syntax: `ClassName.methodName(arguments)`.
+
+Exploring further:
+
+- [Classes (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
+
+### 3.3 Classes (ES13)
+
+### Classes in EcmaScript 2022
+
+EcmaScript 2022 (ES13) introduces class syntax that differs in some ways from earlier versions of EcmaScript. Although the syntax is different, the underlying prototype model is not changed.
+
+A class is declared by using the **class keyword** followed by a class name. The class is implemented by declaring fields and methods within braces. A **field** is a variable that stores data for a class. Each method declaration is similar to a function declaration, but without the `function` keyword. The method name **constructor()** is reserved for the class constructor.
+
+### Private fields and methods
+
+By default, fields and methods are public, meaning the fields and methods are accessible from outside the class. Fields and methods can be made private, or inaccessible from outside the class, by prefixing the field or method name with `#`. Ex: `#privateField` and `#privateMethod()`.
+
+The `City` class in the figure below declares a private field called `#foundingYear`. The public fields `name` and `state` are not declared because, unlike private fields, public field declarations are not required.
+
+Figure 3.3.1: City class with private field.
+
+```js
+class City {
+   #foundingYear;
+   
+   constructor(name, state, foundingYear) {
+      this.name = name;
+      this.state = state;
+      this.#foundingYear = foundingYear;
+   }
+   
+   toString() {
+      return this.name + ", " + this.state +
+         " (" + this.#foundingYear + ")";
+   }
+}
+```
+
+### Getters and setters ES13 (2022)
+
+A class method declaration preceded by the **get keyword** defines a getter method for a property. A class method declaration preceded by the **set keyword** defines a setter method for a property. Defining either a getter or setter method named X, adds a property named X to each class instance. Ex: A `Square` class may have a getter method declared as:
+
+```css
+get area() {
+   return this.width * this.height;
+}
+```
+
+After creating a `Square` instance named `s1`, the expression `s1.area`, without parentheses, gets the square's area.
+
+A get method must not have parameters. A set method must have one parameter. A property can be defined via a getter only, a setter only, or both a getter and setter.
+
+## 3.4 Regular expressions
+
+### Introduction to regular expressions
+
+Programs often need to determine if a string conforms to a pattern. Ex: A user is asked for their phone number, and the program must recognize if the input is formatted like a phone number. Or perhaps a program needs to search through a large collection of DNA sequences and replace defective gene sequences with correct sequences. Developers use regular expressions to solve these types of problems.
+
+A **regular expression** (often shortened to **regex**) is a string pattern that is matched against a string. Regular expressions may be defined with a **RegExp** object or between two forward slashes. Ex: `let re = new RegExp("abc");` or more simply: `let re = /abc/;` The pattern "abc" matches any string that contains "abc". Ex: "abcde" matches but "abd" does not. The RegExp method **test(str)** returns true if the string `str` matches the regex, and false otherwise.
+
+### Special characters
+
+Regular expressions use characters with special meaning to create more sophisticated patterns. The + character matches the preceding character at least once. Ex: `/ab+c/` matches one "a" followed by at least one "b" and one "c", so "abc" and "abbbbc" both match. However, "ac" does not match because the required "b" is missing.
+
+Parentheses are used in a regex to match consecutive characters with \*, +, and ?. Ex: `/(ab)+/` matches one or more "ab", so "abab" and "abbb" both match. However, "acb" does not match because the "c" is between "a" and "b".
+
+Table 3.4.1: Selected special characters in regex patterns.
+
+| Character | Description | Example |
+| --- |  --- |  --- |
+| `*` | Match the preceding character 0 or more times. | `/ab*c/` matches "abc", "abbbbc", and "ac". |
+| `+` | Match the preceding character 1 or more times. | `/ab+c/` matches "abc" and "abbbbc" but not "ac". |
+| `?` | Match the preceding character 0 or 1 time. | `/ab?c/` matches "abc" and "ac", but not "abbc". |
+| `^` | Match at the beginning. | `/^ab/` matches "abc" but not "cab". |
+| `$` | Match at the end. | `/ab$/` matches "cab" but not "abc". |
+| `|` | Match string on the left OR string on the right. | `/ab|cd/` matches "abc" and "bcd". |
+
+### Character ranges
+
+Square brackets are used in regular expressions to match any character in a range of characters. Ex: `/[aeiou]/` matches any vowel, and `/[0-9]/` matches any digit. The not operator (`^`) negates a range. Ex: `[^str]` matches any character except s, t, or r.
+
+### Metacharacters
+
+A **metacharacter** is a character or character sequence that matches a class of characters in a regular expression. Ex: The period character matches any single character except the newline character. So `/ab.c/` matches "abZc" and "ab2c", but not "abc" since the period must match a single character. Other metacharacters begin with a backslash.
+
+| Metacharacter | Description | Example |
+| --- |  --- |  --- |
+| `.` | Match any single character except newline. | `/a.b/` matches "aZb" and "a b". |
+| `\w` | Match any word character (alphanumeric and underscore). | `/a\wb/` matches "aAb" and "a5b" but not "a b". |
+| `\W` | Match any non-word character. | `/a\Wb/` matches "a-b" and "a b" but not "aZb". |
+| `\d` | Match any digit. | `/a\db/` matches "a2b" and "a9b", but not "aZb". |
+| `\D` | Match any non-digit. | `/a\Db/` matches "aZb" and "a b", but not "a2b". |
+| `\s` | Match any whitespace character (space, tab, form feed, line feed). | `/a\sb/` matches "a b" but not "a4b". |
+| `\S` | Match any non-whitespace character. | `/a\Sb/` matches "a!b" but not "a b". |
+
+### Mode modifiers
+
+A **mode modifier** (sometimes called a **flag**) changes how a regex matches and is placed after the second slash in a regex. Ex: `/abc*/i` specifies the mode modifier `i`, which performs case-insensitive matching.
+
+Table 3.4.3: Selected mode modifiers.
+
+| Mode modifier | Description | Example |
+| --- |  --- |  --- |
+| `i` | Case insensitivity - Pattern matches upper or lowercase. | `/aBc/i` matches "abc" and "AbC". |
+| `m` | Multiline - Pattern with `^` and `$` match beginning and end of any line in a multiline string. | `/^ab/m` matches the second line of "cab\\nabc", and `/ab$/m` matches the first line. |
+| `g` | Global search - Pattern is matched repeatedly instead of just once. | `/ab/g` matches "ab" twice in "cababc". |
+
+participation activity
+
+3.4.7: Using regular expressions to identify secret messages.
+
+A criminal organization is using Reddit to communicate. To keep from being detected, the criminals are posting comments that look innocuous but use a secret pattern.
+
+-   The pattern contains one or more digits followed by any number of characters, followed by the word "star". Ex: "3stars" and "99 bright stars!" should both match.
+-   The letters in the word "star" may be separated by a single space. Ex: "1 blast ark" and "1 s t a r" should match.
+-   The comments can include upper or lowercase characters. Ex: "2 STar" should match.
+
+Loop through the Reddit posts in the `posts` array and output to the console the lines that match the criminal's pattern. Use a single regex to identify the suspected posts. Hint: The 2nd, 3rd, and 5th lines should match the regex.
+
+```js
+let posts = [
+   "The starting time was 6pm.",
+   "If the 2nd string QB gets hurt, they have no starting QB.",
+   "My email is sis1@yahoo.com.  Last are first.",
+   "Stare into the abyss 1 time.",
+   "90210 for Beverly Hills. Thick as TAR."
+];
+
+// Modify to output only lines that match regex
+let re = /\d+.*s\s?t\s?a\s?r\s?/i;
+
+posts.forEach(function(line) {
+   if(re.test(line)){
+      console.log(line); 
+   }
+});
+```
+
+output:
+
+```cmd
+
+If the 2nd string QB gets hurt, they have no starting QB.
+My email is sis1@yahoo.com.  Last are first.
+90210 for Beverly Hills. Thick as TAR.
+```
+
+### Determining what matches
+
+The RegExp method exec(str) determines what part of the string `str` matches a regex. The `exec()` method returns a result array, or returns `null` if the pattern does not match.
+
+Figure 3.4.1: Using exec() to discover what characters matched the regex.
+
+```js
+let re = /t.+r/;
+let result = re.exec("Raise the bar high.");
+
+if (result === null) {
+   console.log("No match.");
+}
+else {
+   // Index 0 is the full string that matched
+   console.log(result[0]);   // the bar
+```
+
+Parentheses in a regex are used to "remember" different parts of a matched string. Ex: `/a(b+)c/` remembers anything matching `(b+)`, so "bbb" is remembered when applying the regex to "abbbc". The remembered parts are accessible from the result array returned by `exec()`. The first array element is the complete matched string, and the following elements are the remembered parts. If the regex contains no parentheses, the returned array contains only the complete string that matches.
+
+```js
+let re = /(B.+)'s (.+day)/;
+let result = re.exec("When is Becky's birthday?");
+
+// Index 0 is the full string that matched
+console.log(result[0]);   // Becky's birthday
+
+// Index 1 is the first remembered part
+console.log(result[1]);   // Becky
+
+// Index 2 is the second remembered part
+console.log(result[2]);   // birthday
+```
+
+3.4.8: Extracting regex matches.
+
+Twitter wants to know which hashtags are currently trending and what websites are tweeted most often. A selection of tweets are given in the `tweets` array. Create two regular expressions that will:
+
+1.  Extract all the hashtags used in the tweets. A hashtag begins with a pound sign and contains all following word characters. Ex: #myHashTag. Output each hashtag to the console.
+
+2.  Extract all the domain names from the URLs in the tweets. A URL begins with a protocol and double slash: "https://" or "https://". The domain name is the string of characters immediately after the double slash and before the next forward slash (/). Ex: The domain name for `https://en.wikipedia.org/wiki/URL` is `en.wikipedia.org`. Output each domain name to the console.
+
+Multiple hashtags and URLs may exist in a single tweet, so use the "g" mode modifier on both regexes and loop until the pattern is no longer found. To extract the domain name, use `.+?` to match the characters after the double slash and before the first slash. The `+?` operator is "lazy" and matches as few characters as possible, whereas `+` matches as many characters as possible.
+
+String methods that use regex
+
+Several String methods work with regular expressions:
+
+-   match() returns an array of the matches made when matching the string against a regex.
+-   replace() returns a new string that replaces matching strings with a replacement string.
+-   search() returns the index of the first match between the regex and the given string, or -1 if no match is found.
+-   split() returns an array of strings created by separating the string into substrings based on a regex.
+
+Exploring further:
+
+-   [Regular Expressions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+-   [RegExr](http://regexr.com/) \- For testing regular expressions
+
+## 3.10 Form validation
+
+### Validating data in the web browser
+
+Since data integrity is essential to most applications, many web forms require specific formats for users to enter data. Ex: A credit card must contain 16 digits, a date cannot have a fifteenth month, and only 50 valid names of states exist for the United States of America.
+
+Data validation is checking input for correctness. While a web server must perform data validation on submitted data, a better user experience occurs when the web browser performs the same data validation before submitting. Any invalid data in the webpage can be immediately flagged as needing modifications without waiting for the server to respond.
+
+Data validation can either be performed while the user enters form data by adding a JavaScript function as the change handler for the appropriate field, or immediately prior to submitting the entire form by adding a function as the form's submit handler.
+
+### Validating form input with JavaScript
+
+Each textual input element in an HTML document has a value attribute that is associated with the user-entered text. The `value` attribute can be used to validate user-entered text by checking desired properties, such as:
+
+-   Checking for a specific length using the `length` property on the `value` attribute
+-   Checking if entered text is a specific value using `===`
+-   Checking if the text contains a specific value using the string `indexOf()` method on the `value` attribute
+-   Checking if the text is a number using `isNaN()`
+-   Checking that text matches a desired pattern using a regular expression and the string `match()` method
+
+Drop-down menus also have a `value` attribute that is associated with the user-selected menu option.
+
+Checkboxes and radio buttons have a checked attribute that is a boolean value indicating whether the user has chosen a particular checkbox or radio button. The checked attribute can be used to ensure an input element is either checked or unchecked before form submission. Ex: Agreeing to a website's terms of service.
+
+### Validating form data upon submission
+
+Validating form data using JavaScript that executes when the user submits the form can be performed by:
+
+1.  Register a handler for the form's submit event that executes a validation function.
+
+2.  Within the validation function, inspect the form's input fields via the appropriate DOM elements and element attributes.
+
+3.  If the form is invalid, call the `preventDefault()` method on the event to cancel the form submission and prevent the form data from being sent to the server.
+
+Figure 3.10.1: Ensuring a checkbox is selected before the form is submitted.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <title>Terms of Service</title>
+      <script src="validate.js" defer></script>
+   </head>
+   <body>
+      <form id="tosForm" action="https://example.com" target="_blank" method="POST">
+         <p>
+            <label for="tos">I agree to the terms of service:</label>
+            <input type="checkbox" id="tos">
+         </p>
+         <input type="submit">
+      </form>
+   </body>
+</html>
+```
+
+```js
+// validate.js
+
+function checkForm(event) {
+   let tosWidget = document.querySelector("#tos");
+
+   // Cancel form submission if tos not checked
+   if (!tosWidget.checked) {
+      event.preventDefault();
+   }
+}
+
+let tosForm = document.querySelector("#tosForm");
+tosForm.addEventListener("submit", checkForm);
+```
+
+### Validating each field as data is entered
+
+Alternatively, form data can be validated as the user enters data in the form by:
+
+1.  For each field that should be validated:
+
+    1.  Register an input event handler for the field.
+
+    2.  Create a global variable to track whether the field is currently valid. In most cases, this global variable should be initialized to false since the form typically starts with the field as invalid.
+
+    3.  Modify the global variable as appropriate within the field's event handler.
+
+2.  Register a submit event handler for the form that verifies the global variables for each field are true.
+
+3.  If one or more of the global variables are false, call the `preventDefault()` method on the submit event to prevent the form from submitting to the server.
+
+The example below uses a regular expression to verify the user enters five digits for the ZIP code. Regular expressions are discussed in more detail elsewhere. The form does not submit unless the ZIP is valid.
+
+Figure 3.10.2: Checking a ZIP code field as the user updates the field.
+
+```html
+<!DOCTYPE html>
+<html lang\="en"\>
+   <head\>
+      <meta charset\="UTF-8"\>
+      <title\>Terms of Service</title\>
+      <script src\="validate.js" defer\></script\>
+   </head\>
+   <body\>
+      <form id\="tosForm"\>
+         <label for\="zip"\>ZIP:</label\>
+         <input type\="text" id\="zip"\>
+         <input type\="submit"\>
+      </form\>
+   </body\>
+</html\>
+```
+
+```js
+// validate.js
+
+let zipCodeValid = false;
+let zipCodeWidget = document.querySelector("#zip");
+zipCodeWidget.addEventListener("input", checkZipCode);
+
+function checkZipCode() {
+   let regex = /^\d\d\d\d\d$/;
+   let zip = zipCodeWidget.value.trim();
+   zipCodeValid = zip.match(regex);
+}
+
+let tosForm = document.querySelector("#tosForm");
+tosForm.addEventListener("submit", checkForm);
+
+function checkForm(event) {
+   if (!zipCodeValid) {
+      event.preventDefault();
+   }
+}
+```
+
+### Using HTML form validation
+
+Some HTML form elements and attributes enable the browser to do form validation automatically, which reduces the need for JavaScript validation.
+
+Note
+
+-----
+
+A browser that does not support a particular HTML input element will transform an unsupported element into a text input, which then requires JavaScript to validate the form data.
+
+Some customized HTML input elements can only contain valid values, such as date or color. Customized elements are automatically checked by the browser and/or filled in by a pop-up input picker in the browser, ensuring the submitted value matches a common specification.
+
+Various element attributes allow the browser to do validation without using JavaScript:
+
+-   The **required** attribute indicates that the field must have a value (text or selection) prior to submitting the form.
+-   The **max** and **min** attributes indicate the maximum and minimum values respectively that can be entered in an input field with ranges, such as a date or number.
+-   The **maxlength** and **minlength** attributes indicate the maximum and minimum length of input allowed by an input field.
+-   The **pattern** attribute provides a regular expression that valid input must match.
+-   The **title** attribute can be used to provide a description of valid input when using the pattern attribute.
+
+#### Figure 3.10.3: Using HTML form validation
+
+```html
+<form\>
+  <input type\="range" name\="age" min\="5" max\="120"\>
+  <input type\="checkbox" name\="agree" required\>
+  <input type\="password" name\="password" minlength\="10" maxlength\="16"\>
+  <input type\="text" name\="credit" pattern\="^\\d{16}$" title\="exactly 16 digits"\>
+  <input type\="submit"\>
+</form\>
+```
+
+Several CSS pseudo-classes exist to style input and form elements:
+
+-   The **:valid** pseudo-class is active on an element when the element meets all the stated requirements in field attributes.
+-   The **:invalid** pseudo-class is active on an element when one or more of the attributes in the field are not fully met.
+-   The **:required** pseudo-class is active on an element if the element has the `required` attribute set.
+-   The **:optional** pseudo-class is active on an element if the element does not have the `required` attribute set.
+
+Exploring further:
+
+-   [Form data validation](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms/Data_form_validation) from MDN
+
+Use HTML validation attributes to ensure the entered age is between 21 and 99, inclusive, and the username is 16 characters or less.
+
+```html
+<form>
+   <p>
+      <label for="userAge">User Age:</label>
+      <input id="userAge" type="number" name="age">
+   </p>
+   <p>
+      <label for="userName">Username:</label>
+      <input id="userName" type="text" name="username">
+   </p>
+   <input type="submit">
+</form>
+```
+
