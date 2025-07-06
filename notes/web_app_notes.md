@@ -435,11 +435,11 @@ Inheritance creates a new child class that adopts properties of a parent class.
 
 Implementing inheritance in JavaScript is more complicated than most other programming languages. For a child class to inherit from a parent class, 3 operations must be performed:
 
-1.  The child class calls the parent class' constructor function from the child's constructor function using the `call()` method.
+1. The child class calls the parent class' constructor function from the child's constructor function using the `call()` method.
 
-2.  The Object.create() method copies the parent's prototype, and the new copy is assigned to the child's prototype to give the child class the same functionality as the parent class.
+2. The Object.create() method copies the parent's prototype, and the new copy is assigned to the child's prototype to give the child class the same functionality as the parent class.
 
-3.  The child class' `prototype.constructor` is explicitly set to the child's constructor function.
+3. The child class' `prototype.constructor` is explicitly set to the child's constructor function.
 
 ```js
 // Parent class
@@ -481,22 +481,22 @@ bob.sayGoodbye();
 
 The JavaScript code defines a `Game` class and two methods.
 
-1.  Add a `VideoGame` class and all the necessary code so `VideoGame` inherits from the `Game` class.
+1. Add a `VideoGame` class and all the necessary code so `VideoGame` inherits from the `Game` class.
 
-2.  Add a private variable to the `VideoGame` class called `totalPoints`, and initialize `totalPoints` to 0.
+2. Add a private variable to the `VideoGame` class called `totalPoints`, and initialize `totalPoints` to 0.
 
-3.  Add a getter method called `getScore()` to get the `totalPoints` variable.
+3. Add a getter method called `getScore()` to get the `totalPoints` variable.
 
-4.  Add a method called `addToScore(points)` that adds the `points` to `totalPoints`.
+4. Add a method called `addToScore(points)` that adds the `points` to `totalPoints`.
 
-5.  Instantiate a new `VideoGame` object with the title "Pac-Man". Call the appropriate methods to:
+5. Instantiate a new `VideoGame` object with the title "Pac-Man". Call the appropriate methods to:
 
-    1.  Start playing the game.
-    2.  Show the score (should be 0).
-    3.  Add 20 points.
-    4.  Add 50 points.
-    5.  Show the score (should be 70).
-    6.  Stop playing the game.
+    1. Start playing the game.
+    2. Show the score (should be 0).
+    3. Add 20 points.
+    4. Add 50 points.
+    5. Show the score (should be 70).
+    6. Stop playing the game.
 
 ```js
 function Game(title) {
@@ -684,9 +684,9 @@ participation activity
 
 A criminal organization is using Reddit to communicate. To keep from being detected, the criminals are posting comments that look innocuous but use a secret pattern.
 
--   The pattern contains one or more digits followed by any number of characters, followed by the word "star". Ex: "3stars" and "99 bright stars!" should both match.
--   The letters in the word "star" may be separated by a single space. Ex: "1 blast ark" and "1 s t a r" should match.
--   The comments can include upper or lowercase characters. Ex: "2 STar" should match.
+- The pattern contains one or more digits followed by any number of characters, followed by the word "star". Ex: "3stars" and "99 bright stars!" should both match.
+- The letters in the word "star" may be separated by a single space. Ex: "1 blast ark" and "1 s t a r" should match.
+- The comments can include upper or lowercase characters. Ex: "2 STar" should match.
 
 Loop through the Reddit posts in the `posts` array and output to the console the lines that match the criminal's pattern. Use a single regex to identify the suspected posts. Hint: The 2nd, 3rd, and 5th lines should match the regex.
 
@@ -756,9 +756,9 @@ console.log(result[2]);   // birthday
 
 Twitter wants to know which hashtags are currently trending and what websites are tweeted most often. A selection of tweets are given in the `tweets` array. Create two regular expressions that will:
 
-1.  Extract all the hashtags used in the tweets. A hashtag begins with a pound sign and contains all following word characters. Ex: #myHashTag. Output each hashtag to the console.
+1. Extract all the hashtags used in the tweets. A hashtag begins with a pound sign and contains all following word characters. Ex: #myHashTag. Output each hashtag to the console.
 
-2.  Extract all the domain names from the URLs in the tweets. A URL begins with a protocol and double slash: "https://" or "https://". The domain name is the string of characters immediately after the double slash and before the next forward slash (/). Ex: The domain name for `https://en.wikipedia.org/wiki/URL` is `en.wikipedia.org`. Output each domain name to the console.
+2. Extract all the domain names from the URLs in the tweets. A URL begins with a protocol and double slash: "https://" or "https://". The domain name is the string of characters immediately after the double slash and before the next forward slash (/). Ex: The domain name for `https://en.wikipedia.org/wiki/URL` is `en.wikipedia.org`. Output each domain name to the console.
 
 Multiple hashtags and URLs may exist in a single tweet, so use the "g" mode modifier on both regexes and loop until the pattern is no longer found. To extract the domain name, use `.+?` to match the characters after the double slash and before the first slash. The `+?` operator is "lazy" and matches as few characters as possible, whereas `+` matches as many characters as possible.
 
@@ -766,15 +766,15 @@ String methods that use regex
 
 Several String methods work with regular expressions:
 
--   match() returns an array of the matches made when matching the string against a regex.
--   replace() returns a new string that replaces matching strings with a replacement string.
--   search() returns the index of the first match between the regex and the given string, or -1 if no match is found.
--   split() returns an array of strings created by separating the string into substrings based on a regex.
+- match() returns an array of the matches made when matching the string against a regex.
+- replace() returns a new string that replaces matching strings with a replacement string.
+- search() returns the index of the first match between the regex and the given string, or -1 if no match is found.
+- split() returns an array of strings created by separating the string into substrings based on a regex.
 
 Exploring further:
 
--   [Regular Expressions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
--   [RegExr](http://regexr.com/) \- For testing regular expressions
+- [Regular Expressions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+- [RegExr](http://regexr.com/) \- For testing regular expressions
 
 ## 3.10 Form validation
 
@@ -790,11 +790,11 @@ Data validation can either be performed while the user enters form data by addin
 
 Each textual input element in an HTML document has a value attribute that is associated with the user-entered text. The `value` attribute can be used to validate user-entered text by checking desired properties, such as:
 
--   Checking for a specific length using the `length` property on the `value` attribute
--   Checking if entered text is a specific value using `===`
--   Checking if the text contains a specific value using the string `indexOf()` method on the `value` attribute
--   Checking if the text is a number using `isNaN()`
--   Checking that text matches a desired pattern using a regular expression and the string `match()` method
+- Checking for a specific length using the `length` property on the `value` attribute
+- Checking if entered text is a specific value using `===`
+- Checking if the text contains a specific value using the string `indexOf()` method on the `value` attribute
+- Checking if the text is a number using `isNaN()`
+- Checking that text matches a desired pattern using a regular expression and the string `match()` method
 
 Drop-down menus also have a `value` attribute that is associated with the user-selected menu option.
 
@@ -804,11 +804,11 @@ Checkboxes and radio buttons have a checked attribute that is a boolean value 
 
 Validating form data using JavaScript that executes when the user submits the form can be performed by:
 
-1.  Register a handler for the form's submit event that executes a validation function.
+1. Register a handler for the form's submit event that executes a validation function.
 
-2.  Within the validation function, inspect the form's input fields via the appropriate DOM elements and element attributes.
+2. Within the validation function, inspect the form's input fields via the appropriate DOM elements and element attributes.
 
-3.  If the form is invalid, call the `preventDefault()` method on the event to cancel the form submission and prevent the form data from being sent to the server.
+3. If the form is invalid, call the `preventDefault()` method on the event to cancel the form submission and prevent the form data from being sent to the server.
 
 Figure 3.10.1: Ensuring a checkbox is selected before the form is submitted.
 
@@ -852,17 +852,17 @@ tosForm.addEventListener("submit", checkForm);
 
 Alternatively, form data can be validated as the user enters data in the form by:
 
-1.  For each field that should be validated:
+1. For each field that should be validated:
 
-    1.  Register an input event handler for the field.
+    1. Register an input event handler for the field.
 
-    2.  Create a global variable to track whether the field is currently valid. In most cases, this global variable should be initialized to false since the form typically starts with the field as invalid.
+    2. Create a global variable to track whether the field is currently valid. In most cases, this global variable should be initialized to false since the form typically starts with the field as invalid.
 
-    3.  Modify the global variable as appropriate within the field's event handler.
+    3. Modify the global variable as appropriate within the field's event handler.
 
-2.  Register a submit event handler for the form that verifies the global variables for each field are true.
+2. Register a submit event handler for the form that verifies the global variables for each field are true.
 
-3.  If one or more of the global variables are false, call the `preventDefault()` method on the submit event to prevent the form from submitting to the server.
+3. If one or more of the global variables are false, call the `preventDefault()` method on the submit event to prevent the form from submitting to the server.
 
 The example below uses a regular expression to verify the user enters five digits for the ZIP code. Regular expressions are discussed in more detail elsewhere. The form does not submit unless the ZIP is valid.
 
@@ -923,11 +923,11 @@ Some customized HTML input elements can only contain valid values, such as date 
 
 Various element attributes allow the browser to do validation without using JavaScript:
 
--   The **required** attribute indicates that the field must have a value (text or selection) prior to submitting the form.
--   The **max** and **min** attributes indicate the maximum and minimum values respectively that can be entered in an input field with ranges, such as a date or number.
--   The **maxlength** and **minlength** attributes indicate the maximum and minimum length of input allowed by an input field.
--   The **pattern** attribute provides a regular expression that valid input must match.
--   The **title** attribute can be used to provide a description of valid input when using the pattern attribute.
+- The **required** attribute indicates that the field must have a value (text or selection) prior to submitting the form.
+- The **max** and **min** attributes indicate the maximum and minimum values respectively that can be entered in an input field with ranges, such as a date or number.
+- The **maxlength** and **minlength** attributes indicate the maximum and minimum length of input allowed by an input field.
+- The **pattern** attribute provides a regular expression that valid input must match.
+- The **title** attribute can be used to provide a description of valid input when using the pattern attribute.
 
 #### Figure 3.10.3: Using HTML form validation
 
@@ -943,14 +943,14 @@ Various element attributes allow the browser to do validation without using Java
 
 Several CSS pseudo-classes exist to style input and form elements:
 
--   The **:valid** pseudo-class is active on an element when the element meets all the stated requirements in field attributes.
--   The **:invalid** pseudo-class is active on an element when one or more of the attributes in the field are not fully met.
--   The **:required** pseudo-class is active on an element if the element has the `required` attribute set.
--   The **:optional** pseudo-class is active on an element if the element does not have the `required` attribute set.
+- The **:valid** pseudo-class is active on an element when the element meets all the stated requirements in field attributes.
+- The **:invalid** pseudo-class is active on an element when one or more of the attributes in the field are not fully met.
+- The **:required** pseudo-class is active on an element if the element has the `required` attribute set.
+- The **:optional** pseudo-class is active on an element if the element does not have the `required` attribute set.
 
 Exploring further:
 
--   [Form data validation](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms/Data_form_validation) from MDN
+- [Form data validation](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms/Data_form_validation) from MDN
 
 Use HTML validation attributes to ensure the entered age is between 21 and 99, inclusive, and the username is 16 characters or less.
 
@@ -978,17 +978,17 @@ Communicating data between the server and browser is a significant task for mode
 
 JSON has six basic data types:
 
-1.  **String** \- Unicode characters enclosed within double quotes (`"`). A few special characters must be escaped with a backslash (`\`). Ex: backslashes (`\\`), double quotes (`\"`), newlines (`\n`), and tabs (`\t`).
+1. **String** \- Unicode characters enclosed within double quotes (`"`). A few special characters must be escaped with a backslash (`\`). Ex: backslashes (`\\`), double quotes (`\"`), newlines (`\n`), and tabs (`\t`).
 
-2.  **Number** \- Either an integer or decimal number. Ex: `42`, `3.141`, `-1.1e-5`.
+2. **Number** \- Either an integer or decimal number. Ex: `42`, `3.141`, `-1.1e-5`.
 
-3.  **Object** \- Unordered list of zero or more name/value pairs separated by commas and enclosed within braces (`{}`). A name in a JSON object must be a string in double quotes. A value can be any legal JSON value. Each name and value is separated by a colon. Ex: `{ "Name": "Joe", "Age": 35 }`
+3. **Object** \- Unordered list of zero or more name/value pairs separated by commas and enclosed within braces (`{}`). A name in a JSON object must be a string in double quotes. A value can be any legal JSON value. Each name and value is separated by a colon. Ex: `{ "Name": "Joe", "Age": 35 }`
 
-4.  **Array** \- Ordered list of zero or more JSON values separated by commas and enclosed within brackets (`[]`). Ex: `[]` and `[13,"blue"]`.
+4. **Array** \- Ordered list of zero or more JSON values separated by commas and enclosed within brackets (`[]`). Ex: `[]` and `[13,"blue"]`.
 
-5.  **Boolean** \- Either `true` or `false`.
+5. **Boolean** \- Either `true` or `false`.
 
-6.  **null** \- Represents "nothing".
+6. **null** \- Represents "nothing".
 
 A JSON value can be any of the above data types.
 
@@ -1000,9 +1000,9 @@ A common error when generating JSON programmatically is to include a trailing 
 
 JavaScript provides a built-in JSON object that provides two methods for working with JSON:
 
-1.  The JSON.parse() method creates a JavaScript object from a string containing JSON. Ex: `JSON.parse('[1,"two",null]')` converts the string `'[1,"two",null]'`into the JavaScript array `[1,"two",null]`. Typically, `JSON.parse()` is used with data received from a server.
+1. The JSON.parse() method creates a JavaScript object from a string containing JSON. Ex: `JSON.parse('[1,"two",null]')` converts the string `'[1,"two",null]'`into the JavaScript array `[1,"two",null]`. Typically, `JSON.parse()` is used with data received from a server.
 
-2.  The JSON.stringify() method creates a string from a JavaScript object. Typically, `JSON.stringify()` is used with data sent to a server. `JSON.stringify()` creates a string representation of any passed object by either calling the object's `toJSON()` method if defined or recursively serializing all enumerable, non-function properties. Ex: `JSON.stringify(new Date('2020-08-06'))` converts the JavaScript Date object to the string `2020-08-06T00:00:00.000Z` by calling the Date object's `toJSON()` method.
+2. The JSON.stringify() method creates a string from a JavaScript object. Typically, `JSON.stringify()` is used with data sent to a server. `JSON.stringify()` creates a string representation of any passed object by either calling the object's `toJSON()` method if defined or recursively serializing all enumerable, non-function properties. Ex: `JSON.stringify(new Date('2020-08-06'))` converts the JavaScript Date object to the string `2020-08-06T00:00:00.000Z` by calling the Date object's `toJSON()` method.
 
 Good practice is to use single quotes around JavaScript strings containing JSON notation so that the double quotes for strings and JSON object names do not need to be escaped. Ex: Use `'{"name":"Bob"}'` instead of `"{\"name\":\"Bob\"}"`.
 
@@ -1016,7 +1016,7 @@ The spacer controls the indentation spacing of output JSON string, which indicat
 
 Exploring further:
 
--   [JSON](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON) from MDN
+- [JSON](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON) from MDN
 
 ## 4.1 XMLHttpRequest (Ajax)
 
@@ -1028,33 +1028,33 @@ Ajax (Asynchronous JavaScript and XML) is a technique to asynchronously communi
 
 XMLHttpRequest is an object for communicating with web servers using Ajax. Using the XMLHttpRequest object allows web browsers to hide the communication latency and continue to provide a responsive user interface while waiting for a server response. The XMLHttpRequest object defines handlers for events that occur during the request/response cycle. Ex: A response arrives at the browser, an error occurs during a request, etc. Using event-driven programming, the web application can continue providing a responsive interface and does not need to wait for a response from the server. The web application later updates the page once the response is received.
 
-For security reasons, browsers limit Ajax requests to the web server from which the JavaScript was downloaded. Ex: JavaScript downloaded from http://instagram.com may only make Ajax requests to instagram.com. A **cross-origin HTTP request** is a request made to another domain. Ex: An Ajax request from JavaScript downloaded from instagram.com to yahoo.com is a cross-origin HTTP request. Browsers can make cross-origin HTTP requests using a number of techniques including proxy servers, Cross-Origin Resource Sharing (CORS), and JSON with Padding (JSONP).
+For security reasons, browsers limit Ajax requests to the web server from which the JavaScript was downloaded. Ex: JavaScript downloaded from <http://instagram.com> may only make Ajax requests to instagram.com. A **cross-origin HTTP request** is a request made to another domain. Ex: An Ajax request from JavaScript downloaded from instagram.com to yahoo.com is a cross-origin HTTP request. Browsers can make cross-origin HTTP requests using a number of techniques including proxy servers, Cross-Origin Resource Sharing (CORS), and JSON with Padding (JSONP).
 
 ### Using XMLHttpRequest
 
 The steps for using the XMLHttpRequest API are:
 
-1.  Create a new XMLHttpRequest object.
+1. Create a new XMLHttpRequest object.
 
-2.  Assign handlers to the desired events via the `addEventListener()` method. The `addEventListener()` method takes two arguments: the event name and the event handler, code that should execute when the event occurs. If the handlers are not set up prior to calling the `open()` method, the progress events will not execute.
+2. Assign handlers to the desired events via the `addEventListener()` method. The `addEventListener()` method takes two arguments: the event name and the event handler, code that should execute when the event occurs. If the handlers are not set up prior to calling the `open()` method, the progress events will not execute.
 
-3.  Initialize a connection to a remote resource using the `open()` method. The open() method takes two arguments: the HTTP request type and the URL for the resource. Most browsers only support "GET" and "POST" request types.
+3. Initialize a connection to a remote resource using the `open()` method. The open() method takes two arguments: the HTTP request type and the URL for the resource. Most browsers only support "GET" and "POST" request types.
 
-4.  Modify the default HTTP request headers if needed with the setRequestHeader() method. Ex: `xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")` sets the `Content-Type` header so a URL-encoded string may be sent in a POST request.
+4. Modify the default HTTP request headers if needed with the setRequestHeader() method. Ex: `xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")` sets the `Content-Type` header so a URL-encoded string may be sent in a POST request.
 
-5.  Send the HTTP request via the send() method. For POST requests, the data to be sent with the request is passed as the argument to the `send()` method.
+5. Send the HTTP request via the send() method. For POST requests, the data to be sent with the request is passed as the argument to the `send()` method.
 
 ### XMLHttpRequest result handlers
 
 Good practice is to use a result handler for each specific result to separate functionality for each Ajax event. Ex: Error handling, progress bars, updating the user interface on success, etc. The XMLHttpRequest result handlers are:
 
--   The load handler is called when the exchange between the browser and server has completed. From the browser's perspective, the server received the request and responded. However, the request might not have been successful because of a problem such as a non-existent webpage. The HTTP status code must be examined to check which type of response was received. Ex: 200 vs. 404. The load, error, and abort handlers are mutually exclusive and are called after any progress handlers.
+- The load handler is called when the exchange between the browser and server has completed. From the browser's perspective, the server received the request and responded. However, the request might not have been successful because of a problem such as a non-existent webpage. The HTTP status code must be examined to check which type of response was received. Ex: 200 vs. 404. The load, error, and abort handlers are mutually exclusive and are called after any progress handlers.
 
--   The error handler is called when the browser does not receive an appropriate response to a request. Ex: The browser is unable to connect to the server, the connection between browser and server is cut in the middle of a response, etc.
+- The error handler is called when the browser does not receive an appropriate response to a request. Ex: The browser is unable to connect to the server, the connection between browser and server is cut in the middle of a response, etc.
 
--   The abort handler is called when the browser is told to stop a request/response that is still in progress. Ex: The user closes the webpage that made the request.
+- The abort handler is called when the browser is told to stop a request/response that is still in progress. Ex: The user closes the webpage that made the request.
 
--   The timeout handler is called if the browser takes too much time to fully receive a response to a request. The timeout is an optional value that can be provided before the request is made. By default, the browser does not provide a timeout for a request.
+- The timeout handler is called if the browser takes too much time to fully receive a response to a request. The timeout is an optional value that can be provided before the request is made. By default, the browser does not provide a timeout for a request.
 
 Note
 
@@ -1064,18 +1064,18 @@ The readystatechange handler relates to any change in the XMLHttpRequest. Whe
 
 XMLHttpRequest progress handlers are:
 
--   The loadstart handler is called when the browser begins to send a request. The loadstart handler is called before any other XMLHttpRequest handler.
+- The loadstart handler is called when the browser begins to send a request. The loadstart handler is called before any other XMLHttpRequest handler.
 
--   The loadend handler is called after the browser receives the response. The loadend handler is called upon both response success and failure, and is called after all other XMLHttpRequest handlers.
+- The loadend handler is called after the browser receives the response. The loadend handler is called upon both response success and failure, and is called after all other XMLHttpRequest handlers.
 
--   The progress handler is called one or more times while a response is being received by the client. Progress handlers are called before result handlers. The progress handler can be used to provide a data download progress indicator to the user. A similar handler is available to provide an indicator for uploaded data.
+- The progress handler is called one or more times while a response is being received by the client. Progress handlers are called before result handlers. The progress handler can be used to provide a data download progress indicator to the user. A similar handler is available to provide an indicator for uploaded data.
 
 ### Attributes for determining XMLHttpRequest success
 
 The XMLHttpRequest object has attributes for checking the status of a response, which are usually used in the load handler and used to update the DOM.
 
--   The status attribute is the numeric status code returned in the response.
--   The statusText attribute is the descriptive text describing the status attribute.
+- The status attribute is the numeric status code returned in the response.
+- The statusText attribute is the descriptive text describing the status attribute.
 
 Checking the `status` attribute of a response is important because the status code identifies the specific reason for a failure response. Ex: 403 means the requestor does not have permission to access the requested resource, and 404 means the requested resource was not found.
 
@@ -1101,31 +1101,31 @@ Table 4.1.1: Common HTTP response status codes.
 
 The XMLHttpRequest object provides multiple ways to access the response data.
 
--   The response attribute is the response body, which is parsed by the browser according to the `responseType` attribute.
+- The response attribute is the response body, which is parsed by the browser according to the `responseType` attribute.
 
--   The responseText attribute is the plain text version of the response.
+- The responseText attribute is the plain text version of the response.
 
--   The responseXML attribute is the XML DOM version of the response. The `responseXML` attribute is only available as a DOM object if the response is a valid and correctly formatted XML document.
+- The responseXML attribute is the XML DOM version of the response. The `responseXML` attribute is only available as a DOM object if the response is a valid and correctly formatted XML document.
 
 The responseType attribute is set by the programmer to let the browser know the expected response data format.
 
--   If the `responseType` attribute is set to `"json"`, then the browser parses the entire response as a JSON object and sets the `response` attribute to the JSON object.
+- If the `responseType` attribute is set to `"json"`, then the browser parses the entire response as a JSON object and sets the `response` attribute to the JSON object.
 
--   If the `responseType` attribute is either `""` or `"text"`, the browser leaves the response unprocessed, and the `response` attribute contains the same value as `responseText`.
+- If the `responseType` attribute is either `""` or `"text"`, the browser leaves the response unprocessed, and the `response` attribute contains the same value as `responseText`.
 
--   If the `responseType` attribute is `"document"`, the browser assumes the response is an XML document, and the `response` attribute contains the same value as `responseXML`.
+- If the `responseType` attribute is `"document"`, the browser assumes the response is an XML document, and the `response` attribute contains the same value as `responseXML`.
 
 ![Image of HTML and JavaScript handling a query string and loading JSON.](query_string_and_loading_json.png)
 
 Caption:
 
-1.  The user types the title "Star Wars" and presses the Search button, causing the Search button's click handler to execute.
-2.  xhr.responseType is set to "json" so that the JSON sent to the browser in the Ajax response will be automatically converted into a JavaScript object.
-3.  A query string is constructed using the text from the text box. encodeURIComponent() converts "Star Wars" into a string with no spaces.
-4.  An asynchronous HTTP request to lookup.php with a query string is sent to the web server.
-5.  Web server looks up "Star Wars" in a database and sends back a JSON response with information about the movie.
-6.  The load handler verifies the response's status code is 200 and accesses the movie object from this.response, which was created from the JSON response.
-7.  The movie information is placed in the paragraph, and the browser renders the HTML.
+1. The user types the title "Star Wars" and presses the Search button, causing the Search button's click handler to execute.
+2. xhr.responseType is set to "json" so that the JSON sent to the browser in the Ajax response will be automatically converted into a JavaScript object.
+3. A query string is constructed using the text from the text box. encodeURIComponent() converts "Star Wars" into a string with no spaces.
+4. An asynchronous HTTP request to lookup.php with a query string is sent to the web server.
+5. Web server looks up "Star Wars" in a database and sends back a JSON response with information about the movie.
+6. The load handler verifies the response's status code is 200 and accesses the movie object from this.response, which was created from the JSON response.
+7. The movie information is placed in the paragraph, and the browser renders the HTML.
 
 ### Monitoring uploads
 
@@ -1150,8 +1150,8 @@ xhr.send(file);
 
 Exploring further:
 
--   [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) from MDN
--   [HTTP access control (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) from MDN
+- [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) from MDN
+- [HTTP access control (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) from MDN
 
 ## 4.4 Promises
 
@@ -1164,13 +1164,14 @@ An asynchronous function is a function that starts an operation and potentiall
 ![Image of synchronous vs asynchronous function.](image.png)
 
 Captions:
-1.  Downloading data from the web is often a slow task. The doWork() implementation on the left uses downloadSync() to synchronously download data.
-2.  The doWork() implementation on the right uses downloadAsync() to download data asynchronously.
-3.  If the data takes 1000 milliseconds (ms) to download, the downloadSync() call returns after 1000 ms.
-4.  After the download, sorting the array takes another 400 ms. The entire function finishes at 1400 ms.
-5.  The asynchronous download function starts the download but returns just after starting. The download still takes 1000 ms.
-6.  downloadAsync() takes 120ms to start the operation, but then returns. So the array sort can start after about 120 ms. The download continues in the background.
-7.  downloadAsync() calls the listener function when the download completes. The array sort executed concurrently with the download, so only 1000 ms were required for both operations.
+
+1. Downloading data from the web is often a slow task. The doWork() implementation on the left uses downloadSync() to synchronously download data.
+2. The doWork() implementation on the right uses downloadAsync() to download data asynchronously.
+3. If the data takes 1000 milliseconds (ms) to download, the downloadSync() call returns after 1000 ms.
+4. After the download, sorting the array takes another 400 ms. The entire function finishes at 1400 ms.
+5. The asynchronous download function starts the download but returns just after starting. The download still takes 1000 ms.
+6. downloadAsync() takes 120ms to start the operation, but then returns. So the array sort can start after about 120 ms. The download continues in the background.
+7. downloadAsync() calls the listener function when the download completes. The array sort executed concurrently with the download, so only 1000 ms were required for both operations.
 
 ### Promise object
 
@@ -1178,16 +1179,16 @@ An asynchronous function cannot return the result of the operation since the fun
 
 A Promise object can be in one of three states: pending, fulfilled, or rejected.
 
--   Pending means that the asynchronous operation is still running.
--   Fulfilled means that the asynchronous operation has completed successfully.
--   Rejected means that the asynchronous operation has ended in failure to produce the intended result.
+- Pending means that the asynchronous operation is still running.
+- Fulfilled means that the asynchronous operation has completed successfully.
+- Rejected means that the asynchronous operation has ended in failure to produce the intended result.
 
 Once reaching the fulfilled or rejected state, the Promise object is **settled**, and the state will not change again.
 
 The Promise constructor has a single parameter, an **executor function** that executes in the background. The executor function has two parameters:
 
--   `resolve` \- Function to call when the executor function has completed successfully (state becomes fulfilled)
--   `reject` \- Function to call when the executor function has completed unsuccessfully (state becomes rejected)
+- `resolve` \- Function to call when the executor function has completed successfully (state becomes fulfilled)
+- `reject` \- Function to call when the executor function has completed unsuccessfully (state becomes rejected)
 
 Promise state transition diagram.
 
@@ -1197,13 +1198,13 @@ Function that returns a promise object.
 
 ![Function that returns a promise object](image-2.png)
 
-1.  The function saveToCloudAsync() simulates saving user data to a remote server.
-2.  saveToCloudAsync() returns a Promise object. The Promise constructor's executor function has resolve and reject parameters.
-3.  When saveToCloudAsync() is called and the Promise object is first created, the Promise is in the pending state.
-4.  Since userData is null, reject() is called. The Promise moves to the rejected state.
-5.  When saveToCloudAsync() is called with an object, the new Promise object is in the pending state.
-6.  Since userData is not null, setTimeout() is called to simulate an executor function that saves userData to a remote server.
-7.  resolve() is called after 2 seconds, which changes the Promise state to fulfilled.
+1. The function saveToCloudAsync() simulates saving user data to a remote server.
+2. saveToCloudAsync() returns a Promise object. The Promise constructor's executor function has resolve and reject parameters.
+3. When saveToCloudAsync() is called and the Promise object is first created, the Promise is in the pending state.
+4. Since userData is null, reject() is called. The Promise moves to the rejected state.
+5. When saveToCloudAsync() is called with an object, the new Promise object is in the pending state.
+6. Since userData is not null, setTimeout() is called to simulate an executor function that saves userData to a remote server.
+7. resolve() is called after 2 seconds, which changes the Promise state to fulfilled.
 
 ### Promise.then() method
 
@@ -1211,13 +1212,13 @@ A Promise object's then() method can be called to request notifications about 
 
 The `then()` method can be called when the Promise object is in any state. The fulfilled callback function will eventually be called if either of the following is true:
 
--   the Promise is already fulfilled when `then()` is called, or
--   the Promise is pending when `then()` is called and is eventually fulfilled.
+- the Promise is already fulfilled when `then()` is called, or
+- the Promise is pending when `then()` is called and is eventually fulfilled.
 
 Similarly, the rejected callback function will eventually be called if either of the following is true:
 
--   the Promise is already rejected when `then()` is called, or
--   the Promise is pending when `then()` is called and is eventually rejected.
+- the Promise is already rejected when `then()` is called, or
+- the Promise is pending when `then()` is called and is eventually rejected.
 
 ```js
 function saveUserData(data) {
@@ -1270,8 +1271,8 @@ The second parameter to the `then()` method is optional. If omitted, the param
 
 A Promise object's catch() method takes a single argument that is a function to call if the Promise is rejected or if the fulfilled handler throws an exception. Consider the two statements:
 
-1.  `promiseObj.then(okFunc, failFunc);`
-2.  `promiseObj.then(okFunc).catch(failFunc);`
+1. `promiseObj.then(okFunc, failFunc);`
+2. `promiseObj.then(okFunc).catch(failFunc);`
 
 While having some similarity, the two statements are not equivalent. The first statement will call either `okFunc()` or `failFunc()`, but not both. The second statement will call `okFunc()` if `promiseObj` is fulfilled, and then also call `failFunc()` if `okFunc()` throws an exception. Both will call only `failFunc()` if `promiseObj` is rejected.
 
@@ -1292,8 +1293,8 @@ Table 4.4.1: Comparison of Promise object's then() and catch() usage scenarios.
 
 Exploring further:
 
--   [Promise (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
--   [Using promises (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)
+- [Promise (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+- [Using promises (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)
 
 ## 4.6 Fetch API
 
@@ -1303,13 +1304,13 @@ The **Fetch API** defines a **fetch()** method for sending HTTP requests and
 
 The `fetch()` method sends a GET request (by default) to the given URL argument and returns a Promise object. The Promise object resolves to a **Response** object, which contains information about the HTTP response and methods for retrieving the response body. Some properties and methods of `Response` include:
 
--   The **response.status** property is the HTTP response's status code (200, 301, 404, etc.)
+- The **response.status** property is the HTTP response's status code (200, 301, 404, etc.)
 
--   The **response.ok property** is true if the HTTP response's status code is 2xx, false otherwise.
+- The **response.ok property** is true if the HTTP response's status code is 2xx, false otherwise.
 
--   The **response.headers** property is an object containing the HTTP response headers.
+- The **response.headers** property is an object containing the HTTP response headers.
 
--   The **response.text()** method returns a Promise that resolves with the textual body of the HTTP response.
+- The **response.text()** method returns a Promise that resolves with the textual body of the HTTP response.
 
 The web browser restricts `fetch()` from sending a cross-origin HTTP request, which is a request made to another domain. Ex: If `fetch()` is called from JavaScript downloaded from abc.com, the browser restricts a cross-origin HTTP request to xyz.com. A web server can implement Cross-Origin Resource Sharing (CORS) to allow cross-origin requests.
 
@@ -1322,10 +1323,10 @@ let html = await response.text();
 console.log(html);
 ```
 
-1.  The fetch() method sends an HTTP GET request to the zybooks.com web server. The await operator waits for the HTTP response to return before continuing.
-2.  The web server responds with the HTML for the URL https://learn.zybooks.com.
-3.  The status property is the HTTP status code. 200 means success.
-4.  The text() method returns the response body containing HTML as text.
+1. The fetch() method sends an HTTP GET request to the zybooks.com web server. The await operator waits for the HTTP response to return before continuing.
+2. The web server responds with the HTML for the URL <https://learn.zybooks.com>.
+3. The status property is the HTTP status code. 200 means success.
+4. The text() method returns the response body containing HTML as text.
 
 ### Alternative syntax
 
@@ -1377,20 +1378,20 @@ for (let user of users.results) {
 
 ```
 
-1.  The fetch() method sends an HTTP GET request to the randomuser.me web server.
-2.  The web server returns JSON that encodes information for 3 randomized users.
-3.  The json() method parses the JSON response and returns an object containing the JSON data.
-4.  The for-of loop outputs the name, gender, and email address of the three users to the console.
+1. The fetch() method sends an HTTP GET request to the randomuser.me web server.
+2. The web server returns JSON that encodes information for 3 randomized users.
+3. The json() method parses the JSON response and returns an object containing the JSON data.
+4. The for-of loop outputs the name, gender, and email address of the three users to the console.
 
 ### POST request
 
 The `fetch()` method has an optional second parameter, an object that specifies options to modify the HTTP request. Some common `fetch()` options:
 
--   The **method** option indicates the HTTP method. Ex: GET, POST, PUT, and DELETE.
+- The **method** option indicates the HTTP method. Ex: GET, POST, PUT, and DELETE.
 
--   The **headers** option specifies various HTTP request headers. Ex: Content-Type and User-Agent.
+- The **headers** option specifies various HTTP request headers. Ex: Content-Type and User-Agent.
 
--   The **body** option specifies the HTTP request body, which could be form data, a JSON-encoded string, or binary data.
+- The **body** option specifies the HTTP request body, which could be form data, a JSON-encoded string, or binary data.
 
 The animation below POSTs form data using `fetch()` and the `FormData` object. The JavaScript object **FormData** stores key/value pairs from a form submission.
 
@@ -1425,16 +1426,16 @@ form.addEventListener("submit", async function(e) {
 });
 ```
 
-1.  The HTML form allows the user to submit a username and password.
-2.  When the form is submitted, e.preventDefault() prevents the browser from reloading the webpage.
-3.  fetch() creates a POST request, placing the form data in the request body. The form data is sent to the web server.
-4.  If the username and password are correct, the server responds with the text "Login successful".
-5.  The alert() method displays the text response in a dialog box.
+1. The HTML form allows the user to submit a username and password.
+2. When the form is submitted, e.preventDefault() prevents the browser from reloading the webpage.
+3. fetch() creates a POST request, placing the form data in the request body. The form data is sent to the web server.
+4. If the username and password are correct, the server responds with the text "Login successful".
+5. The alert() method displays the text response in a dialog box.
 
 Exploring further:
 
--   [Fetch Standard (WHATWG)](https://fetch.spec.whatwg.org/)
--   [Fetch API (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
+- [Fetch Standard (WHATWG)](https://fetch.spec.whatwg.org/)
+- [Fetch API (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
 
 ## 4.8 Full-stack development (Node)
 
@@ -1442,8 +1443,8 @@ Exploring further:
 
 Website and web applications require software or other technologies that exist in two different locations:
 
--   Client-side (or front-end) refers to those technologies that run in the web browser like HTML, CSS, and JavaScript.
--   Server-side (or back-end) refers to those technologies that run on the web server like PHP, Python, Node.js, etc. and databases.
+- Client-side (or front-end) refers to those technologies that run in the web browser like HTML, CSS, and JavaScript.
+- Server-side (or back-end) refers to those technologies that run on the web server like PHP, Python, Node.js, etc. and databases.
 
 Ex: Amazon uses server-side technologies to store information on millions of products and a client-side search interface that interacts with the web server so customers can find and purchase products.
 
@@ -1453,13 +1454,13 @@ A **front-end developer** is a developer that is proficient in client-side tec
 
 When creating a web application, developers must decide where the application and application data are going to be hosted. Large companies like Google, Amazon, and Facebook have the resources to host their web applications on their own servers. Smaller companies and individuals often outsource their server hosting to web hosting companies. A **web hosting company** is a company that hosts others' websites on the company's servers, usually for a fee. Factors to consider when choosing a web hosting company include:
 
--   **Reliability**: Many web hosting companies guarantee a certain level of uptime, and the level can be increased by paying more. Some companies backup data daily, and others provide little to no backups.
+- **Reliability**: Many web hosting companies guarantee a certain level of uptime, and the level can be increased by paying more. Some companies backup data daily, and others provide little to no backups.
 
--   **Flexibility**: Websites that become popular may need to quickly scale-up to handle more users. Web hosting companies may offer a virtual private server that can quickly be duplicated on other servers to meet high demand. A **virtual private server (VPS)** is an autonomous server that is hosted on a physical server with other virtual servers. Amazon Web Services (AWS) allows organizations to host virtual servers in the Amazon cloud that can quickly scale-up hosted websites when necessary.
+- **Flexibility**: Websites that become popular may need to quickly scale-up to handle more users. Web hosting companies may offer a virtual private server that can quickly be duplicated on other servers to meet high demand. A **virtual private server (VPS)** is an autonomous server that is hosted on a physical server with other virtual servers. Amazon Web Services (AWS) allows organizations to host virtual servers in the Amazon cloud that can quickly scale-up hosted websites when necessary.
 
--   **Security**: Hackers may attempt to access a website's data or upload malware to a hosted website that attacks the website, other hosted websites, or the website's users. **Malware** is malicious software designed to cripple a computer system or perform unwanted actions. Some hosting companies offer extra security measures like encrypting web traffic or providing dedicated servers in heavily-guarded data centers.
+- **Security**: Hackers may attempt to access a website's data or upload malware to a hosted website that attacks the website, other hosted websites, or the website's users. **Malware** is malicious software designed to cripple a computer system or perform unwanted actions. Some hosting companies offer extra security measures like encrypting web traffic or providing dedicated servers in heavily-guarded data centers.
 
--   **Price**: Some web hosting companies offer limited services for free and subsidize lost income with advertising. Prices go up depending on reliability, services provided, security, amount of traffic, etc. The most expensive plans usually involve dedicated hosting where the customer is given full control over the web server.
+- **Price**: Some web hosting companies offer limited services for free and subsidize lost income with advertising. Prices go up depending on reliability, services provided, security, amount of traffic, etc. The most expensive plans usually involve dedicated hosting where the customer is given full control over the web server.
 
 The choice of platform dictates many of the web application's implementation decisions, since certain server-side technologies are only offered on certain platforms. Most web hosting companies provide a Linux or Windows server to host the website. Linux servers typically use open-source software: Apache web server with support for PHP, Python, Ruby, or Perl, and the MySQL database system. Windows servers generally run Microsoft's IIS web server, which supports ASP.NET and the SQL Server database system. Linux servers usually cost less than Windows servers because of the use of open-source software.
 
@@ -1467,17 +1468,17 @@ The choice of platform dictates many of the web application's implementation dec
 
 Web developers have a wide range of options when choosing a server-side programming platform or language. When choosing a server-side programming platform, developers must consider:
 
--   **Server platform**: Some web servers support certain languages and not others. Ex: IIS supports ASP.NET, and Apache supports PHP.
+- **Server platform**: Some web servers support certain languages and not others. Ex: IIS supports ASP.NET, and Apache supports PHP.
 
--   **Tool support**: Some tools are ideal for working with certain programming languages. Ex: PhpStorm is ideal for PHP development, and Visual Studio is ideal for ASP.NET.
+- **Tool support**: Some tools are ideal for working with certain programming languages. Ex: PhpStorm is ideal for PHP development, and Visual Studio is ideal for ASP.NET.
 
--   **Developer experience**: JavaScript developers may choose Node.js instead of learning a new language like C#. Developers who are new to web development might already know Java or Python and prefer those languages.
+- **Developer experience**: JavaScript developers may choose Node.js instead of learning a new language like C#. Developers who are new to web development might already know Java or Python and prefer those languages.
 
--   **Library support**: Some languages may have pre-built libraries that support some web applications better than others.
+- **Library support**: Some languages may have pre-built libraries that support some web applications better than others.
 
 Developers have traditionally used server-side technologies to generate dynamic webpages. A **dynamic webpage** is a webpage that is generated on the web server when requested, typically personalized to the user who requested the page. With advances in web browsers, developers have begun creating static webpages that are dynamically altered by JavaScript. In this new paradigm, server-side technologies are used primarily to respond to Ajax requests and send data to the front-end for rendering.
 
-Single Page Applications are an example of modern web development. A **Single Page Application (SPA)** is a web application that provides a similar user experience as a desktop application, all in a single webpage. Ex: Gmail, Google Docs, and Google Calendar are all SPAs. An SPA initially loads all of the application's resources so subsequent user interaction results in loading small pieces of content dynamically. Much of an SPA's programming logic is written in JavaScript, which loads data via Ajax calls to a web API. A **web API** is a collection of functions that are invoked using HTTP. Ex: An HTTP GET request to the URL https://linkedin.com/api/contacts may retrieve a list of all contacts from the web server.
+Single Page Applications are an example of modern web development. A **Single Page Application (SPA)** is a web application that provides a similar user experience as a desktop application, all in a single webpage. Ex: Gmail, Google Docs, and Google Calendar are all SPAs. An SPA initially loads all of the application's resources so subsequent user interaction results in loading small pieces of content dynamically. Much of an SPA's programming logic is written in JavaScript, which loads data via Ajax calls to a web API. A **web API** is a collection of functions that are invoked using HTTP. Ex: An HTTP GET request to the URL <https://linkedin.com/api/contacts> may retrieve a list of all contacts from the web server.
 
 ### Databases
 
@@ -1485,11 +1486,11 @@ Websites and web applications normally store and retrieve information from a dat
 
 **Non-relational databases**, sometimes called **non-SQL** or **NoSQL** databases, have become increasingly popular over the last few years. Non-relational databases use different methods to store and retrieve data using a variety of data access languages. Non-relational databases come in several flavors:
 
--   Document database: For storing documents in JSON format with many levels of nesting. Ex: MongoDB.
--   Key-value database: For storing values that are associated with unique keys. Ex: Redis.
--   Object database: For storing objects created in object-oriented programming languages. Ex: Caché.
--   Column database: For storing and processing large amounts of data using pointers that link to columns distributed over a cluster. Ex: HBase.
--   Graph database: For storing graph structures with nodes and edges. Ex: Neo4j.
+- Document database: For storing documents in JSON format with many levels of nesting. Ex: MongoDB.
+- Key-value database: For storing values that are associated with unique keys. Ex: Redis.
+- Object database: For storing objects created in object-oriented programming languages. Ex: Caché.
+- Column database: For storing and processing large amounts of data using pointers that link to columns distributed over a cluster. Ex: HBase.
+- Graph database: For storing graph structures with nodes and edges. Ex: Neo4j.
 
 The figure below illustrates how information about students might be stored in a relational database with a table versus a document database using JSON-like documents. The "SELECT" statement is an SQL statement used to extract students with a 3.0 GPA or above from the table. The "db.students.find" statement is a MongoDB function used to extract the same information from the document database.
 
@@ -1501,19 +1502,19 @@ Figure 4.8.2: Relational database vs. document database for student data.
 
 The user interface (UI) governs the interaction between users and web applications. Developers use HTML, CSS, and JavaScript to create the UI. Various tools exist to aid UI development:
 
--   An HTML preprocessor is a program that converts a markup language into HTML. The markup languages supported by HTML preprocessors are generally easier to use and read than HTML. Ex: Haml, Markdown, Slim, Pug.
+- An HTML preprocessor is a program that converts a markup language into HTML. The markup languages supported by HTML preprocessors are generally easier to use and read than HTML. Ex: Haml, Markdown, Slim, Pug.
 
--   A CSS preprocessor is a program that converts a CSS-like language into CSS. CSS-like languages simplify the development of CSS stylesheets used in large projects. Ex: Sass, Less, Stylus.
+- A CSS preprocessor is a program that converts a CSS-like language into CSS. CSS-like languages simplify the development of CSS stylesheets used in large projects. Ex: Sass, Less, Stylus.
 
--   A UI library is a library that creates UI widgets like sliders, dialog boxes, and drop-downs or simplify DOM manipulation. Ex: jQuery UI, Bootstrap, YUI, Ext JS. Libraries like React and Vue.js support more extensive UI management.
+- A UI library is a library that creates UI widgets like sliders, dialog boxes, and drop-downs or simplify DOM manipulation. Ex: jQuery UI, Bootstrap, YUI, Ext JS. Libraries like React and Vue.js support more extensive UI management.
 
--   A CSS front-end framework is a framework that uses CSS or CSS pre-processors to aid in developing responsive websites that work well on every screen size. Ex: Bootstrap, YAML 4, Skeleton, Foundation.
+- A CSS front-end framework is a framework that uses CSS or CSS pre-processors to aid in developing responsive websites that work well on every screen size. Ex: Bootstrap, YAML 4, Skeleton, Foundation.
 
 Most modern web applications use an extensive amount of JavaScript, so developers use various tools to aid in JavaScript development:
 
--   A compile-to-JavaScript language is a programming language that is compiled into JavaScript. Compile-to-JavaScript languages provide benefits lacking in JavaScript like type safety, simplified class creation, and module creation. Ex: TypeScript, CoffeeScript, and Haxe.
+- A compile-to-JavaScript language is a programming language that is compiled into JavaScript. Compile-to-JavaScript languages provide benefits lacking in JavaScript like type safety, simplified class creation, and module creation. Ex: TypeScript, CoffeeScript, and Haxe.
 
--   A JavaScript framework is a JavaScript environment that dictates the organization of the application's JavaScript to simplify many programming tasks. JavaScript frameworks often dictate how UI widgets receive data or send data to the web server. Ex: AngularJS, Backbone, Ember.
+- A JavaScript framework is a JavaScript environment that dictates the organization of the application's JavaScript to simplify many programming tasks. JavaScript frameworks often dictate how UI widgets receive data or send data to the web server. Ex: AngularJS, Backbone, Ember.
 
 Figure 4.8.3: Example use of HTML and CSS preprocessors and compile-to-JavaScript.
 ![Example preprocessors](image-5.png)
@@ -1524,9 +1525,9 @@ Developers must test the full technology stack used by web applications. A varie
 
 ### Exploring further
 
--   [Ranking of database systems](http://db-engines.com/en/ranking)
--   [6 Current Options for CSS Preprocessors](http://www.sitepoint.com/6-current-options-css-preprocessors/)
--   [Best languages that compile to JavaScript](http://www.slant.co/topics/101/~languages-that-compile-to-javascript)
--   [Top JavaScript Frameworks, Libraries and Tools and When to Use Them](http://www.sitepoint.com/top-javascript-frameworks-libraries-tools-use/)
--   [Summary of web application testing methodologies and tools](http://www.ibm.com/developerworks/library/wa-webapptesting/)
+- [Ranking of database systems](http://db-engines.com/en/ranking)
+- [6 Current Options for CSS Preprocessors](http://www.sitepoint.com/6-current-options-css-preprocessors/)
+- [Best languages that compile to JavaScript](http://www.slant.co/topics/101/~languages-that-compile-to-javascript)
+- [Top JavaScript Frameworks, Libraries and Tools and When to Use Them](http://www.sitepoint.com/top-javascript-frameworks-libraries-tools-use/)
+- [Summary of web application testing methodologies and tools](http://www.ibm.com/developerworks/library/wa-webapptesting/)
 
