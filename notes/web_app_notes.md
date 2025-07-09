@@ -1531,3 +1531,146 @@ Developers must test the full technology stack used by web applications. A varie
 - [Top JavaScript Frameworks, Libraries and Tools and When to Use Them](http://www.sitepoint.com/top-javascript-frameworks-libraries-tools-use/)
 - [Summary of web application testing methodologies and tools](http://www.ibm.com/developerworks/library/wa-webapptesting/)
 
+## 5.1 Getting started with Node.js
+
+### Introduction to Node.js
+
+Node.js is a JavaScript runtime environment that is primarily used to run server-side web applications. Node.js has many benefits:
+
+-   The event-driven, non-blocking I/O architecture of Node.js allows Node.js to handle high loads.
+
+-   Node.js allows developers to write JavaScript on the server and client, simplifying some development tasks.
+
+-   Node.js provides a simple mechanism to create and distribute modules. A Node.js module is a JavaScript file that provides some useful functionality.
+
+-   Node.js works seamlessly with MongoDB, a document database that stores JSON and uses JavaScript as a query language. Web development is greatly simplified when JSON is used between the client and server, and between the server and database.
+
+Companies using Node.js include Netflix, Walmart, Ebay, and LinkedIn. Adoption by these companies helped validate the Node.js approach and spur development of more Node.js modules.
+
+### Installing and running
+
+Developers may install Node.js using installers from the [Node.js website](https://nodejs.org/en/download/) for Windows, macOS, and other operating systems.
+
+After installing Node.js, a developer can start the Node.js interactive shell and execute JavaScript statements. The figure below shows a command line prompt from which the user started the Node.js interactive shell by entering "node". The ".exit" command exits the interactive shell.
+
+Figure 5.1.3: Simple Node.js program.
+
+```js
+// hello.js
+for (let i \= 0; i < 5; i++) {
+   console.log("Hello, Node.js!");
+}
+
+```
+
+```bash
+$ node hello.js
+Hello, Node.js!
+Hello, Node.js!
+Hello, Node.js!
+Hello, Node.js!
+Hello, Node.js!
+```
+
+### Creating a simple web server
+
+The **http module** allows a Node.js application to create a simple web server. The http module's **createServer()** method creates a web server that can receive HTTP requests and send HTTP responses. The **listen()** method starts the server listening for HTTP requests on a particular port. The server continues to run until the developer enters Ctrl+C to kill the Node.js application.
+
+The program below shows the http module being imported with `require()`. The **require()** function imports a CommonJS module for use in a Node.js program.
+
+A package is a directory containing one or more modules and a package.json file. A package.json file contains JSON that lists the package's name, version, license, dependencies, and other package metadata.
+
+The Node Package Manager (npm) is the package manager for Node.js that allows developers to download, install, and update packaged modules. npm is installed with Node.js and is executed from the command line.
+
+npm can install packages in one of two modes:
+
+-   Local mode: Packages are installed in a `node_modules` directory in the parent working directory. Ex: `npm install mypackage`
+
+-   Global mode: Packages are installed in a `{prefix}/node_modules` directory, where `{prefix}` is a location set in npm's configuration. The `--global` flag (or `-g`) directs npm to install in global mode. Ex: `npm install mypackage --global`
+
+Local mode is ideal for installing project dependencies. A dependency is a package that a Node.js project must be able to access to run. Global mode is typically for installing command-line tools.
+
+The figure below shows a developer installing the nodemon package globally. Nodemon is a utility that saves developers time by restarting a Node.js application whenever the files in a project are modified.
+
+Figure 5.1.7: Installing and running nodemon.
+
+```sh
+$ npm install nodemon --global
+
+added 29 packages in 2s
+
+4 packages are looking for funding
+  run \`npm fund\` for details
+
+$ nodemon myproject/server.js
+\[nodemon\] 3.1.4
+\[nodemon\] to restart at any time, enter \`rs\`
+\[nodemon\] watching path(s): \*.\*
+\[nodemon\] watching extensions: js,mjs,cjs,json
+\[nodemon\] starting \`node myproject/server.js\`
+\[nodemon\] clean exit - waiting for changes before restart
+```
+
+Underscore is a library of helpful functions that extends some built-in JavaScript objects. The figure below shows a developer changing to the `myproject` directory that stores a Node.js project, installing underscore as a local package, and producing a list of the project's local packages. The underscore module is stored in `myproject/node_modules/underscore`.
+
+Figure 5.1.8: Installing "underscore" as a local package.
+
+```sh
+$ cd myproject
+$ npm install underscore
+
+added 1 package in 2s
+
+$ npm list
+myproject@ some/path/myproject
+└── underscore@1.13.6
+```
+
+A module is imported and assigned to a variable with `require()`. Good practice is to assign imported modules to variables that are named similar to the module name. Ex: Variable `http` for the "http" module. However, the underscore module is usually assigned to the variable `_`, as shown in the figure below.
+
+Table 5.1.1: Summary of npm commands.
+
+
+| Command | Description | Example |
+| --- |  --- |  --- |
+| `config` | Manage npm configuration files | ```npm config list npm config get prefix``` |
+| --- |  --- |  --- |
+| `install` | Install package locally or globally (-g) | ```npm install nodemon -g``` |
+| `list` | List all installed local or global (-g) packages | ```npm list``` |
+| `update` | Update a local or global (-g) package | ```npm update lodash``` |
+| `uninstall` | Uninstall a local or global (-g) package | ```npm uninstall lodash``` |
+
+### The package.json and package-lock.json files
+
+Node.js projects use package.json to list information about the project, including the project's name, version, license, and package dependencies. Developers can manually create package.json or use the `npm init` command, which prompts the user to enter various fields and generates package.json automatically.
+
+When a project's package.json file is present, all the project's dependencies can be installed with a single command: `npm install`.
+
+A **package-lock.json** file is created or modified when project dependencies are added or removed. The file ensures that the same dependency versions are always used when the project is installed on different machines. Ex: A project's package.json file may indicate a dependency version ^1.9.1. The caret character (^) means that npm should install the highest version of the library that exists, as long as the major version number, the number following the caret, is the same. So if version 1.9.2 is available, 1.9.2 is installed. But version 2.0.0 is not installed since ^1 requires the major version number to be 1. If the package-lock.json indicates that version 1.9.1 should be used, npm will install version 1.9.1 instead of any newer versions.
+
+Semantic versioning
+
+npm uses semantic versioning to ensure the correct package version is installed. Semantic versioning is a popular software versioning scheme that uses a sequence of three digits: major.minor.patch. Ex: 1.2.3.
+
+-   The major number indicates a major version of the package, which adds new functionality and possibly alters how previous functions now work.
+-   The minor number indicates a minor change to the package, which usually entails bug fixes and minor changes to how the package's functions work.
+-   The patch number indicates a bug fix to a minor version.
+
+Figure 5.1.11: Files composing Node.js project.
+
+```sh
+myproject
+├── node\_modules
+│   └── underscore
+├── package.json
+├── package-lock.json
+└── server.js
+
+```
+
+-   [Node.js website](https://nodejs.org/en/)
+-   [npm documentation](https://docs.npmjs.com/)
+-   [package.json documentation](https://docs.npmjs.com/files/package.json)
+-   [package-lock.json documentation](https://docs.npmjs.com/files/package-lock.json)
+-   [Understanding module.exports and exports in Node.js](http://www.sitepoint.com/understanding-module-exports-exports-node-js/)
+
