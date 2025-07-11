@@ -17,6 +17,7 @@ m05/
 m06/
 m07/
 m08/
+resources/book-chapters/
 
 # ignore doc/notes.txt, but not doc/server/arch.txt
 #doc/*.txt
