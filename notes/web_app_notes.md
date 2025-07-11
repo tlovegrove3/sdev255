@@ -1674,3 +1674,651 @@ myproject
 -   [package-lock.json documentation](https://docs.npmjs.com/files/package-lock.json)
 -   [Understanding module.exports and exports in Node.js](http://www.sitepoint.com/understanding-module-exports-exports-node-js/)
 
+## 5.3 Express
+
+### Express server
+
+Express is a popular web application framework for Node.js because Express allows developers to create web servers with less code. Express is installed with npm: `npm install express`.
+
+```html
+<!DOCTYPE html>
+<html\>
+  <title\>Hello Express</title\>
+  <body\>
+     <h1\>Hello, Express!</h1\>
+  </body\>
+</html\>
+```
+
+```js
+const express = require("express");
+const app = express();
+
+// Serve static files from the public dir
+app.use(express.static("public"));
+
+// Start the web server
+app.listen(3000, function() {
+   console.log("Listening on port 3000...");
+});
+```
+
+1.  After installing, the express package is located in the project's node\_modules directory.
+2.  The public directory is for storing static files (HTML, images, etc.) that can be served by the Express server.
+3.  server.js contains the Node.js application code and is executed from the command line.
+4.  The require() function imports the express module, and express() creates the express application object.
+5.  express.static() names the path that contains static files to be served by the server. app.use() applies the path to the express object.
+6.  app.listen() starts the web server listening for HTTP requests on port 3000 and outputs to the console after the web server starts.
+7.  When the browser requests hello.html from the Express server, the server responds with hello.html.
+
+### Routes
+
+Express uses routing to handle browser requests. An Express **route** is a specific URL path and an HTTP request method to which a callback function is assigned. A route's callback function has **request** and **response** parameters, which represent the HTTP request and response.
+
+A route is defined with the structure: `app.method(path, callback)`
+
+-   `app` \- Express instance
+-   `method` \- HTTP request method (get, post, etc.)
+-   `path` \- URL path
+-   `callback` \- Callback function executed when the route matches
+
+The figure below shows an example of a GET route and a POST route with different paths. The route callback functions use **res.send()** to send an HTTP response containing HTML.
+
+Figure 5.3.1: Example routes.
+
+```js
+// Called for GET request to http://localhost:3000/hello
+app.get("/hello", function(req, res) {
+   res.send("<h1>Hello, Express!</h1>");
+});
+
+// Called for POST request to http://localhost:3000/goodbye
+app.post("/goodbye", function(req, res) {
+   res.send("<h1>Goodbye, Express!</h1>");
+```
+
+### Middleware
+
+A **middleware function** (or just middleware) is a function that examines or modifies the `request` and/or `response` objects. A middleware function has three parameters:
+
+-   `req` \- HTTP request object
+-   `res` \- HTTP response object
+-   `next` \- Callback to the middleware function
+
+The Express method **use()** enables a middleware function to execute.
+
+5.3.4: Middleware function that logs requests.
+
+```js
+const express \= require("express");
+const app \= express();
+
+const logRequest \= function(req, res, next) {
+   console.log(\`Request: ${req.method} for ${req.path}\`);
+   next();
+};
+
+app.use(logRequest);
+
+app.get("/hello", function(req, res) {
+   res.send("<h1>Hello, Express!</h1>");
+});
+
+app.listen(3000, function() {
+   console.log("Listening on port 3000...");
+});
+
+```
+
+1.  The middleware function logRequest() logs the request method and path to the console.
+2.  logRequest() is enabled by calling app.use().
+3.  After starting the server, the browser's request to /hello causes logRequest() to be called.
+4.  The request method GET and path /hello are logged in the server's console.
+5.  logRequest() calls next() to allow other middleware and the /hello route to execute.
+6.  After logRequest() finishes, the /hello route responds with a "Hello, Express!" message, which is displayed in the browser.
+
+### Third-party middleware
+
+Third parties have created many useful middleware functions that can be installed with npm. Ex: `npm install morgan` installs middleware that logs information about HTTP requests.
+
+Figure 5.3.2: Using morgan middleware.
+
+```js
+const express \= require("express");
+const morgan \= require("morgan");
+
+const app \= express();
+
+// Show HTTP requests in the console
+app.use(morgan("dev"));
+
+app.listen(3000);
+
+```
+
+Example console logging of requests:
+
+```js
+GET /hello.html 200 8.645 ms - 132
+POST /hello 200 4.280 ms - 25
+GET /blah 404 1.297 ms - -
+```
+
+Table 5.3.1: Popular third-party middleware for Express.
+
+| Middleware | Description |
+| --- |  --- |
+| morgan | Logs HTTP request information |
+| cookie-parser | Parses the cookie header in an HTTP request |
+| errorhandler | Aids debugging during development |
+| csurf | Protects against cross-site request forgery (CSRF) |
+| compression | Compresses response bodies |
+| express-session | Manages session data on the server |
+
+Express application generator.
+
+A developer can use the application generator tool `express-generator` to automatically create an Express application skeleton. The tool saves developers time from writing application code that is common to many Express applications. Projects produced by `express-generator` use the Pug template engine to create views or webpages that interact with the MongoDB database.
+
+-   [Express API reference](http://expressjs.com/en/4x/api.html)
+-   Middleware: [morgan](https://github.com/expressjs/morgan), [cookie-parser](https://github.com/expressjs/cookie-parser), [errorhandler](https://github.com/expressjs/errorhandler), [csurf](https://github.com/expressjs/csurf), [compression](https://github.com/expressjs/compression), [express-session](https://www.npmjs.com/package/express-session)
+-   [Express application generator](https://expressjs.com/en/starter/generator.html)
+
+## 5.4 Express request data
+
+### Query string parameters
+
+Express automatically parses query string parameters (the values appearing after the "?" in a URL) and stores the parameters' names and values in the **req.query** object.
+
+```js
+app.get("/hello", function(req, res) {
+   const html =
+      `<h1>Hello, ${req.query.name}!</h1>
+       <p>You are ${req.query.age} years old.</p>`;
+  
+   res.send(html);
+});
+```
+
+1.  The browser requests the /hello route with data in the query string.
+2.  The route's callback function extracts name and age from the req.query object.
+3.  res.send() sends back a response with the name and age.
+
+### Posting form data
+
+When a form posts data to an Express route, the form's data is URL-encoded and sent in the body of the HTTP request. The **express.urlencoded()** method is middleware that parses URL-encoded data in a request body and adds the parsed values to the `req.body` object.
+
+5.4.3: Extracting posted form data.
+
+```html
+<form method="post" action="/hello">
+  <p>
+     <label>Name? <input type="text" name="name"></label>
+  </p>
+  <p>
+     <label>Age? <input type="number" name="age"></label>
+  </p>
+  <input type="submit" value="Submit">
+</form>
+```
+
+```js
+const express = require("express");
+const app = express();
+
+app.use(express.static("public"));
+
+app.use(express.urlencoded({extended: false}));
+
+app.post("/hello", function(req, res) {
+   const html = `<h1>Hello, ${req.body.name}!</h1>
+      <p>You are ${req.body.age} years old.</p>`;
+   res.send(html);
+});
+
+app.listen(3000);
+
+```
+
+1.  Express is configured to serve files in the "public" directory.
+2.  express.urlencoded() returns middleware that only parses HTTP request bodies when Content-Type: application/x-www-form-urlencoded is present in the header.
+3.  The web browser requests hello.html from the Express server and renders the webpage.
+4.  The user enters her name and age and presses Submit. A POST request with the user's name and age is sent to the Express server.
+5.  The middleware decodes posted data from the HTTP request body and attaches the data to req.body.
+6.  The request is posted to the /hello route callback function, which returns a response saying hello to the user.
+
+### Route parameters
+
+Express applications often use routes with data in the URL path to generate dynamic webpages. A **route parameter** is a string near or at the end of the URL path that specifies a data value. A route parameter's name is defined in the route path with a colon (:) before the parameter name. Ex: In the route path "/users/:username", "username" is a route parameter's name. Route parameters are attached to the **req.params** object.
+
+5.4.5: Extracting route parameters.
+
+```js
+app.get("/users/:username", function(req, res) {
+   const username = req.params.username;
+   res.send("<h1>Profile for " + username + "</h1>");
+});
+```
+
+1.  The browser requests /user/jblack, which matches the /users route with the :username parameter name.
+2.  The route's callback function extracts the username "jblack" from the req.params object.
+3.  res.send() sends back a response with the username.
+
+### Route parameter middleware
+
+The Express object's **param()** method defines parameter middleware that executes before a route's callback function. The middleware function has a fourth parameter that contains the value assigned to the route parameter.
+
+The figure below shows the username parameter being examined in the parameter middleware. If the username is "jblack", the user's name is "Jack Black". Otherwise, the user's name is unknown. The `req` object is modified to contain a `user` object with properties `name` and `username`. A real-world application would replace the if-else statement with a database query that looks up names and usernames from a database.
+
+Figure 5.4.1: Route parameter middleware example.
+
+```js
+// Parameter middleware executes before the route
+app.param("username", function(req, res, next, username) {
+
+   // Check if username is recognized
+   if (username === "jblack") {
+      req.user = { name: "Jack Black", username: username };
+   } 
+   else {
+      req.user = { name: "Unknown", username: username };
+   }
+
+   // Continue processing the request
+   next();
+});
+
+app.get("/users/:username", function(req, res) {
+
+   // req.user contains the user info set in the parameter middleware
+   res.send("<h1>Profile for " + req.user.name + "</h1>");
+});
+```
+
+-   [Express API reference](http://expressjs.com/en/4x/api.html)
+
+## 5.5 Relational databases
+
+### Relational databases and tables
+
+Applications often need to store and retrieve large amounts of information. Relational databases have been popular for storing data since the 1970s due to the relative simplicity and efficiency that relational databases offer.
+
+A relational database stores data about entities. An entity is any object that an application wants to store information about. Ex: A university database may need to store data about student, faculty, and course entities. The term "relation" in "relational database" refers to the relationship of data that is stored in a relational database.
+
+Relational databases store entity data in tables.
+
+-   A table is a collection of related entity data that is organized into columns and rows, similar to a spreadsheet.
+-   A column is a set of values of the same type. Each column has a name, different from other column names in the table.
+-   A row is a set of values, one for each column.
+
+
+### Data types
+
+Each column has a data type. Data types vary between relational databases, but 3 common data types include:
+
+1.  Character - Data that contains one or more characters or symbols. Ex: A student name can be stored in a character column.
+2.  Number - Numeric data that supports arithmetic. A student ID and GPA can be stored in number columns.
+3.  Date - Calendar dates that can be compared to each other. Ex: A student's birth date can be stored in a date column.
+
+### Keys
+
+Every table must have a primary key, a column or combination of columns that uniquely identifies each row. Ex: The student table's primary key is stu\_id, because every student has a unique student ID.
+
+Two tables that have a relationship are linked together using a foreign key, a primary key from one table that is shared in another table. Foreign keys help a database maintain referential integrity, which means that if a foreign key contains a value, the value is guaranteed to exist in the primary key.
+
+In this material, primary keys are identified with a solid dot (●), and foreign keys with a hollow dot (○).
+
+Table 5.6.1: Summary of SQL syntax features.
+
+| Type | Description | Examples |
+| --- |  --- |  --- |
+| Literals | Explicit values that are string, numeric, or binary. Strings must be surrounded by single or double quotes. Binary values are represented with `x'0'` where the 0 is any hex value. | ```'String'"String"123x'0fa2'``` |
+| Keywords | Words with special meaning. | SELECT, FROM, WHERE |
+| Identifiers | Objects from the database like tables, columns, etc. | student, last\_name, gpa |
+| Comments | Statement intended only for humans and ignored by the RDBMS when parsing a SQL statement. | ```\-- single line comment/\* multi-line    comment \*/``` |
+
+## 5.8 Creating, altering, and deleting tables
+
+### CREATE TABLE statement
+
+The CREATE TABLE statement creates a new table by specifying the table name, column names, column data types, and constraints. A constraint is a rule that applies to table data. The PRIMARY KEY constraint is used in the CREATE TABLE statement to specify the table's primary key, the column(s) that uniquely identify each row. The primary key can be indicated in two different ways, as illustrated in the figure below.
+
+Figure 5.8.1: CREATE TABLE syntax.
+
+| Primary key listed last```CREATE TABLE table\_name (  column1 datatype,  column2 datatype,  ...  PRIMARY KEY(column\_name));``` | Primary key next to column```CREATE TABLE table\_name (  column1 datatype PRIMARY KEY,  column2 datatype,  ...);``` |
+| --- |  --- |
+
+Table 5.8.1: Common data types in MySQL.
+
+| Data type | Description | Example |
+| --- |  --- |  --- |
+| `CHAR(n)` | Fixed-length character string of length *n* | `'CODE123'` |
+| --- |  --- |  --- |
+| `VARCHAR(n)` | Variable-length character string with maximum length *n* | `'Super Bowl'` |
+| `BOOLEAN` | TRUE or FALSE | `TRUE` |
+| `INTEGER` or `INT` | Integer number | `12345` |
+| `FLOAT` | Approximate number | `3.1416` |
+| `DECIMAL(p, s)` | Precise number where *p* is precision and *s* is scale | `5.99` |
+| `DATE` | Year, month, day: YYYY-MM-DD | `'2020-12-25'` |
+| `TIME` | Hour, minute, second: HH:MM:SS | `'14:06:00'` |
+| `DATETIME` | Year, month, day, hour, minute, second: YYYY-MM-DD HH:MM:SS | `'2020-12-25 14:06:00'` |
+
+5.8.1: Creating a student table.
+
+```sql
+CREATE TABLE student (
+stu_id      INTEGER,
+last_name   VARCHAR(50),
+first_name  VARCHAR(50),
+birth_date  DATE,
+gpa         DECIMAL(2,1)
+);
+```
+
+```sql
+CREATE TABLE faculty (
+  fac_id INTEGER,
+  last_name VARCHAR(50),
+  first_name VARCHAR(50),
+  dept_code VARCHAR(4),
+  hire_date DATE,
+  tenured BOOLEAN,
+  PRIMARY KEY(__F__)
+);
+```
+
+The NOT NULL constraint, listed by a column name in a CREATE TABLE statement, prevents a column from having a NULL value. The primary key column(s) do not need a NOT NULL constraint because a primary key cannot be NULL.
+
+```sql
+CREATE TABLE student (
+  stu_id INTEGER PRIMARY KEY,
+  last_name VARCHAR(50),
+  first_name VARCHAR(50) NOT NULL,
+  birth_date DATE,
+  gpa DECIMAL(2, 1)
+);
+```
+
+### Foreign keys
+
+A foreign key constraint is specified using the **FOREIGN KEY** and **REFERENCES** keywords. The figure below creates a faculty table with dept\_code as the foreign key, which references the department table's dept\_code column. The foreign key constraint forces the faculty table's dept\_code to use only values from the department table's dept\_code column. Without the constraint, the faculty table could contain department codes that do not exist in the department table.
+
+```sql
+CREATE TABLE faculty (
+  fac_id INTEGER,
+  last_name VARCHAR(50),
+  first_name VARCHAR(50),
+  dept_code VARCHAR(4),
+  hire_date DATE,
+  tenured BOOLEAN,
+  PRIMARY KEY(fac_id),
+  FOREIGN KEY(dept_code) REFERENCES department(dept_code)
+);
+```
+
+### Auto-increment columns
+
+ID columns are frequently created as auto-increment columns. An auto-increment column is a column that is assigned an automatically incrementing value. Ex: An auto-incrementing column may be assigned 1, 2, 3, etc. for each row that is inserted into the table.
+
+Each RDMS defines auto-increment columns differently. MySQL uses the AUTO\_INCREMENT keyword to define an auto-increment column. The figure below creates a student table with stu\_id as an auto-increment column.
+
+```sql
+CREATE TABLE student (
+  stu_id INTEGER AUTO_INCREMENT,
+  last_name VARCHAR(50),
+  first_name VARCHAR(50),
+  birth_date DATE,
+  gpa DECIMAL(2, 1),
+  PRIMARY KEY(stu_id)
+```
+
+### Altering and deleting tables
+
+After creating a table, the table can be altered by adding or removing columns or changing a column's data type by using the ALTER TABLE statement with the ADD, DROP COLUMN, and MODIFY clauses. The DROP TABLE statement deletes a table along with all the table's rows.
+
+| Add column | Modify column | Drop column |
+| --- |  --- |  --- |
+| ```ALTER TABLE table\_nameADD column\_name datatype \[constraint\];``` | ```ALTER TABLE table\_nameMODIFY column\_name datatype \[constraint\];``` | ```ALTER TABLE table\_nameDROP COLUMN column\_name;``` |
+
+-   [MySQL Data Types](https://dev.mysql.com/doc/refman/8.0/en/data-types.html) from MySQL.com
+-   [MySQL CREATE TABLE Syntax](https://dev.mysql.com/doc/refman/8.0/en/create-table.html) from MySQL.com
+-   [MySQL ALTER TABLE Syntax](https://dev.mysql.com/doc/refman/8.0/en/alter-table.html) from MySQL.com
+
+Table 5.10.1: WHERE condition operators.
+
+| Operator | Description | Example |
+| --- |  --- |  --- |
+| `= ` | Compares two values for equality | `1 = 2` is false |
+| --- |  --- |  --- |
+| `!=` | Compares two values for inequality | `1 != 2` is true |
+| `<` | Compares two values with < | `2 < 2` is false |
+| `<=` | Compares two values with ≤ | `2 <= 2` is true |
+| `> ` | Compares two values with > | `3 > 3` is false |
+| `>=` | Compares two values with ≥ | `3 >= 3` is true |
+| `AND` | Performs logical AND between two conditions | `1 > 2 AND 2 < 3` is false |
+| `OR` | Performs logical OR between two conditions | `1 > 2 OR 2 < 3` is true |
+| `NOT` | Negates a condition | `NOT 1 > 2` is true |
+
+### LIKE operator
+
+A WHERE clause performs exact string comparison with the equality operator (`=`), but the LIKE operator matches text against a pattern using the two wildcard characters `%` and `_`.
+
+-   `%` matches any number of characters. Ex: `LIKE 'L%t'` matches "Lt", "Lot", "Lift", and "Lol cat".
+-   `_` matches exactly one character. Ex: `LIKE 'L_t'` matches "Lot" and "Lit" but not "Lt" and "Loot".
+
+The LIKE operator performs case-insensitive pattern matching by default or case-sensitive pattern matching if followed by the **BINARY** keyword. Ex: `LIKE BINARY 'L%t'` matches 'Left' but not 'left'.
+
+Regular expressions
+
+Most relational databases provide other mechanisms to perform more advanced pattern matching with regular expressions. Ex: MySQL uses REGEXP to match text against a regular expression, and PostgreSQL uses the SIMILAR TO operator. See the Exploring further section for more information on using regular expressions in SQL.
+
+-   [MySQL SELECT Syntax](https://dev.mysql.com/doc/refman/8.0/en/select.html) from MySQL.com
+-   [MySQL Regular Expressions](https://dev.mysql.com/doc/refman/8.0/en/regexp.html) from MySQL.com
+
+5.11 SQL functions
+==================
+
+### Aggregate functions
+
+RDBMSs provide a wide range of SQL functions that work with or manipulate numbers, strings, dates, and times. An **aggregate function** is a function that works on a group of values. Some common aggregate functions include:
+
+-   COUNT() \- Counts the number of rows retrieved by a SELECT statement.
+-   MIN() \- Finds the minimum value in a group.
+-   MAX() \- Finds the maximum value in a group.
+-   SUM() \- Sums all the values in a group.
+-   AVG() \- Finds the arithmetic mean (average) of all the values in a group.
+
+### GROUP BY and HAVING clauses
+
+Aggregate functions may be used with the **GROUP BY** clause, which groups results using one or more columns. The GROUP BY clause always returns one row for each group.
+
+```sql
+SELECT state, COUNT(\*)
+FROM student
+GROUP BY state
+ORDER BY COUNT(\*);
+
+```
+
+1.  COUNT() counts how many rows are in each group. The GROUP BY clause groups the results by state.
+2.  The ORDER BY clause orders the results by group count.
+3.  1 student is from Texas, 2 from New Mexico, and 3 from Colorado.
+
+The HAVING clause is used with the GROUP BY clause to filter group results. The HAVING clause must appear after the GROUP BY clause but before the optional ORDER BY clause.
+
+The **HAVING** clause is commonly used with aggregate functions because the aggregate functions cannot be used in a WHERE clause.
+
+The figure below shows a HAVING clause that uses an aggregate function to select only groups that have more than one student. Texas, with only one student, is excluded from the result table.
+
+```sql
+SELECT state, COUNT(*)
+FROM student 
+GROUP BY state 
+HAVING COUNT(*) > 1
+ORDER BY COUNT(*);
+```
+
+### Numeric functions and operators
+
+SQL arithmetic operators allow simple calculations to be performed in a SQL statement. RDBMSs provide various numeric functions to perform more advanced calculations.
+Table 5.11.1: Arithmetic operators.
+
+```sql
+Operator	Description	Example
++	Addition	
+-- returns 3
+SELECT 1 + 2;
+-	Subtraction	
+-- returns 1
+SELECT 2 - 1;
+*	Multiplication	
+-- returns 12
+SELECT 3 * 4;
+/	Division	
+-- returns 3.5
+SELECT 7 / 2;
+%	Modulo (find the remainder)	
+-- returns 1
+SELECT 7 % 2;
+```
+
+Table 5.11.2: Common numeric functions.
+
+| Function | Description | Example |
+| --- |  --- |  --- |
+| ABS(n) | Returns the absolute value of *n* | ```\-- returns 5SELECT ABS(\-5);``` |
+| LOG(n) | Returns the natural logarithm of *n* | ```\-- returns 2.302585092994046SELECT LOG(10);``` |
+| POW(x, y) | Returns *x* to the power of *y* | ```\-- returns 8SELECT POW(2, 3);``` |
+| RAND() | Returns a random number between 0 (inclusive) and 1 (exclusive) | ```\-- returns 0.11831825703225868SELECT RAND();``` |
+| ROUND(n, d) | Returns *n* rounded to *d* decimal places | ```\-- returns 16.3SELECT ROUND(16.25, 1);``` |
+| SQRT(n) | Returns the square root of *n* | ```\-- returns 5SELECT SQRT(25);``` |
+
+### String functions
+
+SQL string functions manipulate strings. Some common string functions are summarized in the table below.
+
+Table 5.11.3: Common string functions.
+
+| Function | Description | Example |
+| --- |  --- |  --- |
+| CONCAT(s1, s2, ...) | Returns the string that results from concatenating the string arguments | ```\-- returns 'Disengage'SELECT CONCAT('Dis', 'en', 'gage');``` |
+| LOWER(s) | Returns the lowercase *s* | ```\-- returns 'mysql'SELECT LOWER('MySQL');``` |
+| REPLACE(s, from, to) | Returns the string *s* with all occurrences of *from* replaced with *to* | ```\-- returns 'This or that'SELECT REPLACE('This and that', 'and', 'or');``` |
+| SUBSTRING(s, pos, len) | Returns the substring from *s* that starts at position *pos* and has length *len* | ```\-- returns 'Boom'SELECT SUBSTRING('Boomerang', 1, 4);``` |
+| TRIM(s) | Returns the string *s* without leading and trailing spaces | ```\-- returns 'test'SELECT TRIM('   test   ');``` |
+| UPPER(s) | Returns the uppercase *s* | ```\-- returns 'MYSQL'SELECT UPPER('mysql');``` |
+
+### Date and time functions
+
+Date and time functions operate on DATE, TIME, and DATETIME columns.
+
+Table 5.11.4: Common date and time functions.
+
+| Function | Description | Example |
+| --- |  --- |  --- |
+| CURDATE()CURTIME()NOW() | Returns the current date, time, or date and time in`'YYYY-MM-DD'`, `'HH:MM:SS'`, or`'YYYY-MM-DD HH:MM:SS'` format | ```\-- returns '2024-01-25'SELECT CURDATE();``````\-- returns '21:05:44'SELECT CURTIME();``````\-- returns '2024-01-25 21:05:44'SELECT NOW();``` |
+| DATE(expr)TIME(expr) | Extracts the date or time from a date or datetimeexpression *expr* | ```\-- returns '2013-03-25'SELECT DATE('2013-03-25 22:11:45');``````\-- returns '22:11:45'SELECT TIME('2013-03-25 22:11:45');``` |
+| DAY(d)MONTH(d)YEAR(d) | Returns the day, month, or year from date *d* | ```\-- returns 25SELECT DAY('2016-10-25');``````\-- returns 10SELECT MONTH('2016-10-25')``````\-- returns 2016SELECT YEAR('2016-10-25');``` |
+| HOUR(t)MINUTE(t)SECOND(t) | Returns the hour, minute, or second from time *t* | ```\-- returns 22SELECT HOUR('22:11:45');``````\-- returns 11SELECT MINUTE('22:11:45');``````\-- returns 45SELECT SECOND('22:11:45');``` |
+| DATEDIFF(expr1, expr2)TIMEDIFF(expr1, expr2) | Returns *expr1 - expr2* in number of days or timevalues, given *expr1* and *expr2* are date, time, or datetime values | ```\-- returns 6SELECT DATEDIFF('2013-03-10', '2013-03-04');``````\-- returns 00:14:30SELECT TIMEDIFF('10:00:00', '09:45:30');``` |
+
+-   [MySQL Numeric Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/numeric-functions.html) from MySQL.com
+-   [MySQL: Having Clause](https://www.techonthenet.com/mysql/having.php) from TechOnTheNet.com
+-   [MySQL String Functions](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html) from MySQL.com
+-   [MySQL Date and Time Functions](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html) from MySQL.com
+
+### Template engines
+
+A template engine creates dynamic webpages by replacing variables in a template file with specific values, creating HTML that is sent to the web browser. Template engines usually support programming features like conditional statements, loops, and functions. Several template engines work with Express: Pug, Mustache, EJS, and others. Rendering is the process of combining data with a template. The rendered webpages serve as the web application's views. A view is the visual presentation of the application's data.
+
+To render template files, the following Express application properties must be set with the `set()` method:
+
+-   `views` \- The directory where the template files are located. Ex: `app.set("views", "views-dir");`
+-   `view engine` \- The template engine to use. Ex: `app.set("view engine", "pug");`
+
+Pug (previously Jade) is a popular template engine for Express. Pug is installed using: `npm install pug`.
+
+Pug files use the .pug file extension. The Express response method render() uses the Pug template engine to render a .pug file and return the rendered HTML.
+
+Table 6.1.1: Summary of Pug syntax.
+
+| Description | Pug example | Rendered HTML |
+| --- |  --- |  --- |
+| HTML doctype | ```doctype``` | ```<!DOCTYPE html>``` |
+| --- |  --- |  --- |
+| Nesting elements | ```ol    li Pug uses indentation       em to embed elements inside   li each other.``` | ```<ol\>   <li\>Pug uses indentation       <em\>to embed elements inside</em\></li\>   <li\>each other.</li\></ol\>``` |
+| Displaying text | ```p    | A pipe at the beginning of each   | line displays raw text.``` | ```<p\>A pipe at the beginning of each linedisplays raw text.</p\>``` |
+| Displaying lots of text | ```p.    The period is the simplest way to    include multiple lines of text    because no pipe is required before    each line.``` | ```<p\>The period is the simplest way to include multiple lines of text because no pipe isrequired before each line.</p\>``` |
+| Tag attributes | ```div(style="width:400px")   img(src="dog.jpg", alt="Barking dog")``` | ```<div style\="width:400px"\>   <img src\="dog.jpg" alt\="Barking dog"\></div\>``` |
+| ID attribute | ```h1#headline Pug is everywhere!#options div is the default tag``` | ```<h1 id\="headline"\>Pug is everywhere!</h1\><div id\="options"\>div is the default tag</div\>``` |
+| Class attribute | ```span.important Read this first!div.highlight.pull-right``` | ```<span class\="important"\>Read this first!</span\><div class\="highlight pull-right"\></div\>``` |
+| Comments | ```// Comment is visible in HTML//- Invisible comment``` | `````` |
+
+### JavaScript in Pug
+
+JavaScript can be placed in a Pug template that is executed on the web server when the template is rendered into HTML. JavaScript code is prefaced with a dash `-`.
+
+Four techniques exist to display JavaScript variables:
+
+-   `tag= variable` \- Escape any HTML in the variable and output the result.
+
+-   `tag!= variable` \- Output the variable without escaping the HTML.
+
+-   `#{variable}` \- Escape any HTML in the variable and output the result.
+
+-   `!{variable}` \- Output the variable without escaping the HTML.
+
+Attribute values use JavaScript variables without the need for special characters.
+
+Figure 6.1.1: JavaScript in a Pug template.
+
+| Pug example | Rendered HTML |
+| --- |  --- |
+| ```\- let directions = "An <img> element displays an image."p= directions``` | ```<p\>An &lt;img&gt; element displays an image.</p\>``` |
+| --- |  --- |
+| ```\- const homeTeams = \[ "Broncos", "Nuggets", "Rockies" \]ul    - for (let i = 0; i < homeTeams.length; i++)        li= homeTeams\[i\]``` | ```<ul\>   <li\>Broncos</li\>   <li\>Nuggets</li\>   <li\>Rockies</li\></ul\>``` |
+| ```\- let rand = Math.floor(Math.random() \* 100)- let color = "red"p My favorite number is    span(style="color:" + color) #{rand}   | .``` | ```<p\>My favorite number is    <span style\="color:red"\>8</span\>.</p\>``` |
+
+### Conditionals and loops
+
+Pug has built-in constructs for conditionals and loops that work with JavaScript variables.
+
+Table 6.1.2: Summary of Pug conditionals and loops.
+
+| Description | Pug example | Rendered HTML |
+| --- |  --- |  --- |
+| if-else conditional | ```\- let answer = "Washington"if answer   p The answer is: #{answer}.else   p There is no answer.``` | ```<p\>The answer is: Washington.</p\>``` |
+| --- |  --- |  --- |
+| unless conditional | ```\- let user = { role: "regular" }unless user.role === "admin"   p Hello, regular user.``` | ```<p\>Hello, regular user.</p\>``` |
+| case (switch) | ```\- let points = 5case points   when 0      p No points.   when 1      p One point.   default      p #{points} points.``` | ```<p\>5 points.</p\>``` |
+| each loop with array | ```\- let capitals = \["Austin", "Little Rock", "Denver"\]ul   each city in capitals      li= city``` | ```<ul\>   <li\>Austin</li\>   <li\>Little Rock</li\>   <li\>Denver</li\></ul\>``` |
+| each loop with object | ```\- let capitals = { "TX": "Austin", "AR": "Little Rock", "CO": "Denver" }ul   each city, state in capitals      li= city + ", " + state``` | ```<ul\>   <li\>Austin, TX</li\>   <li\>Little Rock, AR</li\>   <li\>Denver, CO</li\></ul\>``` |
+| while loop | ```\- let n = 1while n <= 4   em= n++``` | ```<em\>1</em\><em\>2</em\><em\>3</em\><em\>4</em\>``` |
+
+### Mixins
+
+A mixin is a Pug function that is defined with the `mixin` keyword. Ex: `mixin myMixin` followed by a block of Pug code defines a mixin. A mixin is called with a plus sign preceding the mixin name. Ex: `+myMixin` calls the mixin named myMixin. Mixins can be defined and called from anywhere within a Pug template.
+
+A mixin can display a code block that is specified under a mixin call by using the `block` keyword inside the function.
+
+Table 6.1.3: Pug mixins.
+
+| Description | Pug example | Rendered HTML |
+| --- |  --- |  --- |
+| No parameters | ```mixin list   ul      li apples      li bananas      li oranges//- Calling the mixin+list``` | ```<ul\>   <li\>apples</li\>   <li\>bananas</li\>   <li\>oranges</li\></ul\>``` |
+| --- |  --- |  --- |
+| Using parameters | ```mixin item(itemName, className)   if className      li(class=className)= itemName   else      li= itemNameul   +item("apples")   +item("bananas", "important")   +item("oranges")``` | ```<ul\>   <li\>apples</li\>   <li class\="important"\>bananas</li\>   <li\>oranges</li\></ul\>``` |
+| Rest parameters | ```//- Accept any number of arguments mixin list(id, ...items)   ol(id=id)      each item in items         li= item+list("groceries", "apples", "bananas", "oranges")``` | ```<ol id\="groceries"\>   <li\>apples</li\>   <li\>bananas</li\>   <li\>oranges</li\></ol\>``` |
+| Mixin blocks | ```mixin ask(question)   p= question   //- Insert code block from under mixin call    block//- No block+ask("What is 2 + 3?")//- With block+ask("Who is Blaise Pascal?")   .note You may consult your textbook.``` | ```<p\>What is 2 + 3?</p\><p\>Who is Blaise Pascal?</p\><div class\="note"\>You may consult your textbook.</div\>``` |
+
+## 6.2 MongoDB
+
+### MongoDB document database
+
+Node.js web applications may use relational or non-relational (NoSQL) databases to store web application data. MongoDB is the most popular NoSQL database used by Node.js developers. MongoDB stores data objects as documents inside a collection.
+
+-   A document is a single data object in a MongoDB database that is composed of field/value pairs, similar to JSON property/value pairs.
+
+-   A collection is a group of related documents in a MongoDB database.
+
+MongoDB stores documents internally as BSON documents. A BSON document (Binary JSON) is a binary representation of JSON with additional type information. BSON types include string, integer, double, date, boolean, null, and others. A BSON document may not exceed 16 MB in size.
+
